@@ -56,8 +56,8 @@ Modern high-security auth system. Completely free and community driven.
 
 ## Installation
 
-1. Clone the repository: `git clone https://github.com/aledlb8/auth.git`
-2. Navigate to the project directory: `cd auth`
+1. Clone the repository: `git clone https://github.com/aledlb8/Bondrith.git`
+2. Navigate to the project directory: `cd Bondrith`
 3. Install dependencies: `npm install` or `yarn install`
 
 ## Usage

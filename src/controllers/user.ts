@@ -1,0 +1,122 @@
+import { Request, Response } from "express";
+import userModel from "../models/user";
+import helpers from "../helpers";
+
+class userController {
+  static async userLogin(req: Request, res: Response) {
+    const ip = req.ip.split(":").pop() || "0.0.0.0";
+
+    try {
+      const { userId } = req.params;
+
+      if (!userId) {
+        helpers.consola.debug(`Invalid request: ${ip}`);
+        return res
+          .status(401)
+          .send({ success: false, message: "Invalid request" });
+      }
+
+      const data = await helpers.verify.verifyId(userId);
+
+      if (!data?.success) {
+        helpers.consola.debug(`${data.message}: ${ip}`);
+        return res.status(401).send({ success: false, message: data?.message });
+      }
+
+      const user = await userModel.findOne({
+        discordId: data.discordData.id,
+      });
+
+      if (!user) {
+        helpers.consola.debug(`Invalid discordId: ${ip}`);
+        return res
+          .status(400)
+          .send({ success: false, message: "Invalid discordId" });
+      }
+
+      user.ip = ip;
+      user.save();
+
+      helpers.consola.debug(`Logged in: ${ip}`);
+      return res.status(200).send({
+        success: true,
+        message: "Logged in",
+        data: data.discordData,
+        userToken: data.userToken,
+      });
+    } catch (err) {
+      return res
+        .status(500)
+        .send({ success: false, message: "Internal server error", err });
+    }
+  }
+
+  static async userAccess(req: Request, res: Response) {
+    const ip = req.ip.split(":").pop() || "0.0.0.0";
+
+    try {
+      const { userToken } = req.params;
+      const { hwid } = req.query;
+
+      if (!userToken) {
+        helpers.consola.debug(`Invalid request: ${ip}`);
+        return res
+          .status(401)
+          .send({ success: false, message: "Invalid request" });
+      }
+
+      const data = await helpers.verify.verifyToken(userToken);
+
+      if (!data?.success) {
+        console.log(data?.message);
+        return res.status(401).send({ success: false, message: data?.message });
+      }
+
+      const user = await userModel.findOne({
+        discordId: data.discordData.id,
+      });
+
+      if (!user) {
+        helpers.consola.debug(`Invalid discordId: ${ip}`);
+        return res
+          .status(400)
+          .send({ success: false, message: "Invalid discordId" });
+      }
+
+      if (user.ip !== ip) {
+        user.ip = ip;
+      }
+
+      if (hwid) {
+        if (
+          data.hwid &&
+          data.hwid !== process.env.HWID_RESET_PLACEHOLDER &&
+          data.hwid !== hwid
+        ) {
+          helpers.consola.debug(`HWID mismatch: ${ip}`);
+          return res
+            .status(400)
+            .send({ success: false, message: "HWID mismatch" });
+        }
+
+        if (!data.hwid || data.hwid == process.env.HWID_RESET_PLACEHOLDER) {
+          user.hwid = hwid.toString();
+        }
+      }
+
+      user.save();
+      helpers.consola.debug(`Access granted: ${ip}`);
+      return res.status(200).send({
+        success: true,
+        message: "Access granted",
+        data: data.discordData,
+      });
+    } catch (err) {
+      return res
+        .status(500)
+        .send({ success: false, message: "Internal server error", err });
+    }
+  }
+}
+
+export default userController;

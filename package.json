@@ -8,6 +8,16 @@
     "dev": "tsc -w && nodemon build/index.js",
     "test": "ts-node src/index.ts"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aledlb8/Bondrith.git"
+  },
+  "author": "aledlb",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/aledlb8/Bondrith/issues"
+  },
+  "homepage": "https://github.com/aledlb8/Bondrith",
   "devDependencies": {
     "@types/express": "^4.17.14",
     "@types/jsonwebtoken": "^8.5.9",

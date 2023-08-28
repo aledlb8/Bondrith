@@ -1,21 +1,21 @@
 <div align="center">
-    <a href="https://github.com/Moonbases/Moonbase/releases/latest">
-      <img alt="Latest release" src="https://img.shields.io/github/v/release/Moonbases/Moonbase?style=for-the-badge&logo=starship&color=C9CBFF&logoColor=D9E0EE&labelColor=302D41" />
+    <a href="https://github.com/aledlb8/Bondrith/releases/latest">
+      <img alt="Latest release" src="https://img.shields.io/github/v/release/aledlb8/Bondrith?style=for-the-badge&logo=starship&color=C9CBFF&logoColor=D9E0EE&labelColor=302D41" />
     </a>
-    <a href="https://github.com/Moonbases/Moonbase/pulse">
-      <img alt="Last commit" src="https://img.shields.io/github/last-commit/Moonbases/Moonbase?style=for-the-badge&logo=starship&color=8bd5ca&logoColor=D9E0EE&labelColor=302D41"/>
+    <a href="https://github.com/aledlb8/Bondrith/pulse">
+      <img alt="Last commit" src="https://img.shields.io/github/last-commit/aledlb8/Bondrith?style=for-the-badge&logo=starship&color=8bd5ca&logoColor=D9E0EE&labelColor=302D41"/>
     </a>
-    <a href="https://github.com/Moonbases/Moonbase/blob/main/LICENSE">
-      <img alt="License" src="https://img.shields.io/github/license/Moonbases/Moonbase?style=for-the-badge&logo=starship&color=ee999f&logoColor=D9E0EE&labelColor=302D41" />
+    <a href="https://github.com/aledlb8/Bondrith/blob/main/LICENSE">
+      <img alt="License" src="https://img.shields.io/github/license/aledlb8/Bondrith?style=for-the-badge&logo=starship&color=ee999f&logoColor=D9E0EE&labelColor=302D41" />
     </a>
-    <a href="https://github.com/Moonbases/Moonbase/stargazers">
-      <img alt="Stars" src="https://img.shields.io/github/stars/Moonbases/Moonbase?style=for-the-badge&logo=starship&color=c69ff5&logoColor=D9E0EE&labelColor=302D41" />
+    <a href="https://github.com/aledlb8/Bondrith/stargazers">
+      <img alt="Stars" src="https://img.shields.io/github/stars/aledlb8/Bondrith?style=for-the-badge&logo=starship&color=c69ff5&logoColor=D9E0EE&labelColor=302D41" />
     </a>
-    <a href="https://github.com/Moonbases/Moonbase/issues">
-      <img alt="Issues" src="https://img.shields.io/github/issues/Moonbases/Moonbase?style=for-the-badge&logo=bilibili&color=F5E0DC&logoColor=D9E0EE&labelColor=302D41" />
+    <a href="https://github.com/aledlb8/Bondrith/issues">
+      <img alt="Issues" src="https://img.shields.io/github/issues/aledlb8/Bondrith?style=for-the-badge&logo=bilibili&color=F5E0DC&logoColor=D9E0EE&labelColor=302D41" />
     </a>
-    <a href="https://github.com/Moonbases/Moonbase">
-      <img alt="Repo Size" src="https://img.shields.io/github/repo-size/Moonbases/Moonbase?color=%23DDB6F2&label=SIZE&logo=codesandbox&style=for-the-badge&logoColor=D9E0EE&labelColor=302D41" />
+    <a href="https://github.com/aledlb8/Bondrith">
+      <img alt="Repo Size" src="https://img.shields.io/github/repo-size/aledlb8/Bondrith?color=%23DDB6F2&label=SIZE&logo=codesandbox&style=for-the-badge&logoColor=D9E0EE&labelColor=302D41" />
     </a>
     <a href="https://patreon.com/aledlb8" title="Donate to this project using Patreon">
       <img alt="Patreon donate button" src="https://img.shields.io/badge/patreon-donate-yellow.svg?style=for-the-badge&logo=starship&color=f5a97f&logoColor=D9E0EE&labelColor=302D41" />
@@ -25,7 +25,7 @@
     </a>
 
   <p align="center">
-    <img src="https://stars.medv.io/Moonbases/Moonbase.svg", title="commits"/>
+    <img src="https://stars.medv.io/aledlb8/Bondrith.svg", title="commits"/>
   </p>
 
 Modern high-security auth system. Completely free and community driven.

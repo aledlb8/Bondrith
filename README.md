@@ -34,9 +34,10 @@ Modern high-security auth system. Completely free and community driven.
 
 **[<kbd> <br> Key Features <br> </kbd>][KeyFeatures]** 
 **[<kbd> <br> Install <br> </kbd>][Install]** 
-**[<kbd> <br> Usage <br> </kbd>][InUsagestall]** 
+**[<kbd> <br> Usage <br> </kbd>][Usage]** 
 **[<kbd> <br> Contribute <br> </kbd>][Contribute]**
 **[<kbd> <br> License <br> </kbd>][License]**
+</div>
 
 <h1 align="center">Bondrith</h1>
 <p align="center">
@@ -84,5 +85,3 @@ Modern high-security auth system. Completely free and community driven.
 [License]: https://github.com/aledlb8/Bondrith/blob/master/LICENSE
 
 Made with ❤️ by [aledlb](https://github.com/aledlb8)
-
-</div>

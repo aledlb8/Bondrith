@@ -2,3 +2,5 @@
 /node_modules
 vsc.bat
 .env
+.gitattributes
+package-lock.json

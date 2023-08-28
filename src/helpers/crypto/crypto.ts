@@ -14,13 +14,13 @@ class crypto {
 
     const buffer = Buffer.concat([cipher.update(text), cipher.final()]);
   
-    const hash = iv.toString("hex") + "**Moonbase**" + buffer.toString("hex");
+    const hash = iv.toString("hex") + `**${process.env.NAME}**` + buffer.toString("hex");
     return Buffer.from(hash).toString("base64");
   }
 
   static decrypt(text: string) {
     const buffer = Buffer.from(text, "base64").toString("ascii");
-    const hash = buffer.split("**Moonbase**");
+    const hash = buffer.split(`**${process.env.NAME}**`);
   
     const string = {
       iv: hash[0],

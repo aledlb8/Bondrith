@@ -31,7 +31,7 @@ const command: SlashCommand = {
             new EmbedBuilder()
               .setColor("#FBC630")
               .setTimestamp()
-              .setDescription("Something went wrong"),
+              .setDescription(secret?.message as string),
           ],
           ephemeral: true,
         });

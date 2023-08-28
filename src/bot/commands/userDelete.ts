@@ -30,7 +30,7 @@ const command: SlashCommand = {
             new EmbedBuilder()
               .setColor("#FBC630")
               .setTimestamp()
-              .setDescription(`That user doesn't own a ${process.env.NAME} copy`),
+              .setDescription(`User not found`),
           ],
           ephemeral: true,
         });

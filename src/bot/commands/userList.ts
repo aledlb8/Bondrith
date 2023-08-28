@@ -42,24 +42,26 @@ const command: SlashCommand = {
       //         infos.push(key)
       //         if(infos.length === 3) {
       //             embeds.push(new EmbedBuilder().setTitle("Account infos").setDescription(`${infos.map(info => {
-      //                 `**id:** <@${info.id}>\n**userId:** ${userid(info.secret)}\n**userToken:** ${usertoken(info.secret)}\n**User:** <@${info.discordId}>\n**createdAt:** ${info.createdAt}`}).join("\n\n ")}`).setColor(`#0x2F3136`))
+      //                 `**id:** <@${info.id}>\n**userId:** ${userid(info.secret)}\n**userToken:** ${usertoken(info.secret)}\n**User:** <@${info.discordId}>\n**createdAt:** ${info.createdAt}`}).join("\n\n ")}`).setColor("#FBC630"))
       //             infos.length = 0
       //         }
       //     }
 
       //     if(infos.length) embeds.push(new EmbedBuilder().setDescription(`${infos.map(info => {
-      //         `**id:** <@${info.id}>\n**userId:** ${userid(info.secret)}\n**userToken:** ${usertoken(info.secret)}\n**User:** <@${info.discordId}>\n**createdAt:** ${info.createdAt}`}).join("\n\n")}`).setColor(`#0x2F3136`))
+      //         `**id:** <@${info.id}>\n**userId:** ${userid(info.secret)}\n**userToken:** ${usertoken(info.secret)}\n**User:** <@${info.discordId}>\n**createdAt:** ${info.createdAt}`}).join("\n\n")}`).setColor("#FBC630"))
       //     return interaction.followUp({ embeds: embeds })
       // }
 
       const embedDetails = data
         .map((info) => {
           return [
-            `**id:** ${info.id}`,
-            `**userId:** ${userid(info.secret)}`,
-            `**userToken:** ${usertoken(info.secret)}`,
-            `**user:** <@${info.discordId}>`,
-            `**createdAt:** ${info.createdAt}`,
+            `id: \`${info.id}\``,
+            `userId: \`${userid(info.secret)}\``,
+            `userToken: \`${usertoken(info.secret)}\``,
+            `IP: \`${info.ip}\``,
+            `HWID: \`${info.hwid}\``,
+            `user: <@${info.discordId}>`,
+            `createdAt: \`${info.createdAt}\``,
           ].join("\n");
         })
         .join("\n\n");
@@ -67,7 +69,7 @@ const command: SlashCommand = {
       const embed = new EmbedBuilder()
         .setTitle("Account Infos")
         .setDescription(embedDetails)
-        .setColor(`#0x2F3136`);
+        .setColor("#FBC630");
       interaction.reply({ embeds: [embed], ephemeral: true });
     } catch (err) {
       return interaction.reply({

@@ -31,7 +31,7 @@ const command: SlashCommand = {
             new EmbedBuilder()
               .setColor("#FBC630")
               .setTimestamp()
-              .setDescription(`That user doesn't own a ${process.env.NAME} copy`),
+              .setDescription(`User not found`),
           ],
           ephemeral: true,
         });
@@ -58,7 +58,7 @@ const command: SlashCommand = {
             .setColor("#FBC630")
             .setTimestamp()
             .setDescription(
-              `Id: \`${userId}\`\nToken: \`${userToken}\`\nIP: \`${data.ip}\`\nHWID: \`${data.hwid}\`\nCreatedAt: \`${data.createdAt}\``
+              `ID: \`${data.id}\`\nUserId: \`${userId}\`\nUserToken: \`${userToken}\`\nIP: \`${data.ip}\`\nHWID: \`${data.hwid}\`\nUser: \<@${data.discordId}>\nCreatedAt: \`${data.createdAt}\``
             ),
         ],
         ephemeral: true,

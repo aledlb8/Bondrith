@@ -50,7 +50,20 @@ const event: BotEvent = {
       }
     } else if (interaction.isModalSubmit()) {
       handleModalSubmit(interaction);
-    }
+    } else if (interaction.isContextMenuCommand()) {
+      const context = interaction.client.commands.get(interaction.commandName);
+      if (!context || !context.enable) {
+        return interaction.reply(
+          "This feature is not available at the moment, please try again later."
+        );
+      }
+
+      try {
+        context.execute(interaction);
+      } catch (error: any) {
+        handleCommandError(interaction, error);
+      }
+    } 
   },
 };
 

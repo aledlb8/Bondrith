@@ -42,22 +42,22 @@ const command: SlashCommand = {
       //         infos.push(key)
       //         if(infos.length === 3) {
       //             embeds.push(new EmbedBuilder().setTitle("Keys").setDescription(`${infos.map(info => {
-      //                 `**key:** ${info.key}\n**used:** ${info.used}\n**createdAt:** ${info.createdAt}`}).join("\n\n ")}`).setColor(`#0x2F3136`))
+      //                 `**key:** ${info.key}\n**used:** ${info.used}\n**createdAt:** ${info.createdAt}`}).join("\n\n ")}`).setColor("#FBC630"))
       //             infos.length = 0
       //         }
       //     }
 
       //     if(infos.length) embeds.push(new EmbedBuilder().setDescription(`${infos.map(info => {
-      //         `**key:** ${info.key}\n**used:** ${info.used}\n**createdAt:** ${info.createdAt}`}).join("\n\n")}`).setColor(`#0x2F3136`))
+      //         `**key:** ${info.key}\n**used:** ${info.used}\n**createdAt:** ${info.createdAt}`}).join("\n\n")}`).setColor("#FBC630"))
       //     return interaction.followUp({ embeds: embeds })
       // }
 
       const embedDetails = data
         .map((info) => {
           return [
-            `**key:** ${helpers.crypto.decrypt(info.key)}`,
-            `**used:** ${info.used}`,
-            `**createdAt:** ${info.createdAt}`,
+            `key: \`${helpers.crypto.decrypt(info.key)}\``,
+            `used: \`${info.used}\``,
+            `createdAt: \`${info.createdAt}\``,
           ].join("\n");
         })
         .join("\n\n");
@@ -65,7 +65,7 @@ const command: SlashCommand = {
       const embed = new EmbedBuilder()
         .setTitle("Keys")
         .setDescription(embedDetails)
-        .setColor(`#0x2F3136`);
+        .setColor("#FBC630");
       interaction.reply({ embeds: [embed], ephemeral: true });
     } catch (err) {
       return interaction.reply({

@@ -1,4 +1,10 @@
-import { SlashCommandBuilder, EmbedBuilder } from "discord.js";
+import {
+  SlashCommandBuilder,
+  EmbedBuilder,
+  ButtonBuilder,
+  ButtonStyle,
+  ActionRowBuilder,
+} from "discord.js";
 import { SlashCommand } from "../../../types";
 import helpers from "../../helpers";
 import userModel from "../../models/user";
@@ -12,14 +18,22 @@ const command: SlashCommand = {
     try {
       const user = await userModel.findOne({ discordId: interaction.user.id });
 
+      const btn = new ButtonBuilder()
+        .setStyle(ButtonStyle.Link)
+        .setURL(process.env.PURCHASE_URL)
+        .setLabel("Purchase");
+
       if (!user)
         return interaction.reply({
           embeds: [
             new EmbedBuilder()
               .setColor("#FBC630")
               .setTimestamp()
-              .setDescription(`Purchase ${process.env.NAME} at ${process.env.PURCHASE_URL}`),
+              .setDescription(
+                `Uh oh! you don't have a ${process.env.NAME} account`
+              ),
           ],
+          components: [new ActionRowBuilder().addComponents(btn) as any],
           ephemeral: true,
         });
 

@@ -1,4 +1,7 @@
 {
+  "name": "bondrith",
+  "version": "0.1",
+  "description": "Modern high-security auth system",
   "scripts": {
     "build": "tsc",
     "start": "node build/index.js",

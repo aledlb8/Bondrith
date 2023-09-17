@@ -1,4 +1,6 @@
 import { createHash, createCipheriv, createDecipheriv, randomBytes, createHmac } from 'crypto';
+import helpers from '..';
+import { deprecate } from 'util';
 
 const algorithm = 'aes-256-ctr';
 
@@ -13,7 +15,7 @@ class crypto {
     const cipher = createCipheriv(algorithm, key, iv);
 
     const buffer = Buffer.concat([cipher.update(text), cipher.final()]);
-  
+
     const hash = iv.toString("hex") + `**${process.env.NAME}**` + buffer.toString("hex");
     return Buffer.from(hash).toString("base64");
   }
@@ -21,23 +23,23 @@ class crypto {
   static decrypt(text: string) {
     const buffer = Buffer.from(text, "base64").toString("ascii");
     const hash = buffer.split(`**${process.env.NAME}**`);
-  
+
     const string = {
       iv: hash[0],
       content: hash[1],
     };
-  
+
     const decipher = createDecipheriv(
       algorithm,
       key,
       Buffer.from(string.iv, "hex")
     );
-  
+
     const concat = Buffer.concat([
       decipher.update(Buffer.from(string.content, "hex")),
       decipher.final(),
     ]);
-  
+
     return concat.toString();
   }
 
@@ -52,10 +54,8 @@ class crypto {
   }
 
   static genKey() {
-    const characters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    const key = Array.from({ length: 5 }, () => Array.from({ length: 4 }, () => characters[Math.floor(Math.random() * characters.length)])
-      .join(""))
-      .join("-");
+    const seed = helpers.pkv.generateSeed();
+    const key = helpers.pkv.generatePKV(seed);
 
     return key;
   }

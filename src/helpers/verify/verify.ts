@@ -1,41 +1,46 @@
-import helpers from "../index";
 import userModel from "../../models/user";
 import keyModel from "../../models/key";
-import axios from "axios";
+import helpers from "..";
 
 class verify {
+  private static async verifyUser(user: any) {
+    const data = helpers.jwt.verify(user.secret);
+
+    if (!data?.success || !data.data) {
+      return { success: false, message: data?.message };
+    }
+
+    const userId = helpers.crypto.decrypt(data.data.userId);
+    const userToken = helpers.crypto.decrypt(data.data.userToken);
+
+    try {
+      const res = await helpers.discord.getInfoByID(user.discordId);
+
+      if (!res?.data) {
+        return { success: false, message: "Invalid discordId" };
+      }
+
+      return { success: true, userId, userToken, discordData: res.data };
+    } catch (error) {
+      helpers.consola.error(error);
+      return { success: false, message: "Error verifying user" };
+    }
+  }
+
   static async verifyId(id: string) {
     if (id.length !== 16) return { success: false, message: "Invalid id" };
 
     const users = await userModel.find();
 
     for (const user of users) {
-      const data = helpers.jwt.verify(user.secret);
-
-      if (!data?.success || !data.data)
-        return { success: false, message: data?.message };
-
-      const userId = helpers.crypto.decrypt(data.data.userId);
-      const userToken = helpers.crypto.decrypt(data.data.userToken);
-
-      try {
-        const res = await axios({
-          method: "GET",
-          headers: { Authorization: `Bot ${process.env.TOKEN}` },
-          url: `https://discord.com/api/v10/users/${user.discordId}`,
-        });
-
-        if (!res.data) return { success: false, message: "Invalid discordId" };
-
-        if (userId == id)
-          return {
-            success: true,
-            message: "Valid id",
-            discordData: res.data,
-            userToken,
-          };
-      } catch (error) {
-        console.log(error);
+      const result = await this.verifyUser(user);
+      if (result.success && result.userId === id) {
+        return {
+          success: true,
+          message: "Valid id",
+          discordData: result.discordData,
+          userToken: result.userToken,
+        };
       }
     }
 
@@ -43,34 +48,20 @@ class verify {
   }
 
   static async verifyToken(token: string) {
-    if (token.length !== 64)
-      return { success: false, message: "Invalid token" };
+    if (token.length !== 64) return { success: false, message: "Invalid token" };
 
     const users = await userModel.find();
 
     for (const user of users) {
-      const data = helpers.jwt.verify(user.secret);
-
-      if (!data?.success || !data.data)
-        return { success: false, message: data?.message };
-
-      const userToken = helpers.crypto.decrypt(data.data.userToken);
-
-      const res = await axios({
-        method: "GET",
-        headers: { Authorization: `Bot ${process.env.TOKEN}` },
-        url: `https://discord.com/api/v10/users/${user.discordId}`,
-      });
-
-      if (!res.data) return { success: false, message: "Invalid discordId" };
-
-      if (userToken == token)
+      const result = await this.verifyUser(user);
+      if (result.success && result.userToken === token) {
         return {
           success: true,
           message: "Valid token",
           hwid: user.hwid,
-          discordData: res.data,
+          discordData: result.discordData,
         };
+      }
     }
 
     return { success: false, message: "Invalid token" };
@@ -81,13 +72,14 @@ class verify {
 
     const keys = await keyModel.find();
 
-    for (const data of keys) {
+    const foundKeyData = keys.find((data) => {
       const keyData = helpers.crypto.decrypt(data.key);
+      return keyData === key && helpers.pkv.verify(key);
+    });
 
-      if (keyData == key) return { success: true, message: "Valid key" };
-    }
-
-    return { success: false, message: "Invalid key" };
+    return foundKeyData
+      ? { success: true, message: "Valid key" }
+      : { success: false, message: "Invalid key" };
   }
 }
 

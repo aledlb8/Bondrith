@@ -63,7 +63,7 @@ const event: BotEvent = {
       } catch (error: any) {
         handleCommandError(interaction, error);
       }
-    } 
+    }
   },
 };
 
@@ -102,6 +102,9 @@ async function handleModalSubmit(interaction: any) {
       break;
     case "redeem":
       await handleKeyRedemption(interaction);
+      break;
+    case "discordupdate":
+      await handleDiscordUpdate(interaction);
       break;
     default:
       break;
@@ -209,9 +212,6 @@ async function handleKeyRedemption(interaction: any) {
         });
       }
 
-      data.used = true;
-      data.save();
-
       const userInfo = helpers.crypto.genUserInfo();
 
       if (!userInfo) {
@@ -249,7 +249,7 @@ async function handleKeyRedemption(interaction: any) {
         const count = await userModel.countDocuments({});
         nextId = count + 1;
       } catch (err) {
-        console.log(err);
+        helpers.consola.error(err);
         return await interaction.reply({
           embeds: [
             new EmbedBuilder()
@@ -262,6 +262,9 @@ async function handleKeyRedemption(interaction: any) {
       }
 
       try {
+        data.used = true;
+        data.save();
+
         await new userModel({
           id: nextId,
           secret,
@@ -289,7 +292,7 @@ async function handleKeyRedemption(interaction: any) {
           ephemeral: true,
         });
       } catch (err) {
-        console.log(err);
+        helpers.consola.error(err);
         return await interaction.reply({
           embeds: [
             new EmbedBuilder()
@@ -311,7 +314,78 @@ async function handleKeyRedemption(interaction: any) {
       ephemeral: true,
     });
   } catch (err) {
-    console.log(err);
+    helpers.consola.error(err);
+    await interaction.reply({
+      embeds: [
+        new EmbedBuilder()
+          .setColor("#FBC630")
+          .setTimestamp()
+          .setDescription("Internal server error"),
+      ],
+      ephemeral: true,
+    });
+  }
+}
+
+async function handleDiscordUpdate(interaction: any) {
+  const id = interaction.fields.getTextInputValue("accountId");
+
+  try {
+    const data = await helpers.verify.verifyId(id);
+
+    if (!data?.success) {
+      return await interaction.reply({
+        embeds: [
+          new EmbedBuilder()
+            .setColor("#FBC630")
+            .setTimestamp()
+            .setDescription(data.message),
+        ],
+        ephemeral: true,
+      });
+    }
+
+    if (data.discordData.id === interaction.user.id) {
+      return await interaction.reply({
+        embeds: [
+          new EmbedBuilder()
+            .setColor("#FBC630")
+            .setTimestamp()
+            .setDescription(`This discord account is already linked to your ${process.env.NAME} account`),
+        ],
+        ephemeral: true,
+      });
+    }
+
+    const user = await userModel.findOne({
+      discordId: data.discordData.id,
+    });
+
+    if (!user) {
+      return await interaction.reply({
+        embeds: [
+          new EmbedBuilder()
+            .setColor("#FBC630")
+            .setTimestamp()
+            .setDescription("Internal server error"),
+        ],
+        ephemeral: true,
+      });
+    }
+
+    user.discordId = interaction.user.id;
+    user.save();
+
+    await interaction.reply({
+      embeds: [
+        new EmbedBuilder()
+          .setColor("#FBC630")
+          .setTimestamp()
+          .setDescription("Discord account updated"),
+      ],
+      ephemeral: true,
+    });
+  } catch (err) {
     await interaction.reply({
       embeds: [
         new EmbedBuilder()

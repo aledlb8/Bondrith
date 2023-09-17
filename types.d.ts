@@ -27,6 +27,7 @@ declare global {
     interface ProcessEnv {
       PORT: number;
       NAME: string;
+      VERSION: string;
       PURCHASE_URL: string;
       HWID_RESET_PLACEHOLDER: string;
       JWT_SECRET: string;
@@ -35,6 +36,7 @@ declare global {
       TOKEN: string;
       CLIENT_ID: string;
       GUILD_ID: string;
+      WEBHOOK: string;
       MONGO_URI: string;
     }
   }

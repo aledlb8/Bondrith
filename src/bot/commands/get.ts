@@ -63,6 +63,7 @@ const command: SlashCommand = {
         ephemeral: true,
       });
     } catch (err) {
+      console.log(err)
       return interaction.reply({
         embeds: [
           new EmbedBuilder()

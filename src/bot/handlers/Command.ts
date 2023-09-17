@@ -21,7 +21,7 @@ module.exports = (client: Client) => {
   const rest = new REST({ version: "10" }).setToken(process.env.TOKEN);
 
 //   rest.put(Routes.applicationCommands(process.env.CLIENT_ID), { body: [] })
-// 	.then(() => console.log('Successfully deleted all application commands.'))
+// 	.then(() => helpers.consola.success('Successfully deleted all application commands.'))
 // 	.catch(console.error);
 
   rest
@@ -32,6 +32,6 @@ module.exports = (client: Client) => {
       helpers.consola.success(`Loaded ${data.length} commands(s)`)
     })
     .catch((e: any) => {
-      console.log(e);
+      helpers.consola.error(e);
     });
 };

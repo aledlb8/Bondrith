@@ -6,11 +6,14 @@ class userController {
   static async userLogin(req: Request, res: Response) {
     const ip = req.ip.split(":").pop() || "0.0.0.0";
 
+    const account = await helpers.discord.getInfoByIP(ip);
+    const identifier = account?.success ? account.data.username : ip;
+
     try {
       const { userId } = req.params;
 
       if (!userId) {
-        helpers.consola.debug(`Invalid request: ${ip}`);
+        helpers.consola.debug(`Invalid request: ${identifier}`);
         return res
           .status(401)
           .send({ success: false, message: "Invalid request" });
@@ -19,7 +22,7 @@ class userController {
       const data = await helpers.verify.verifyId(userId);
 
       if (!data?.success) {
-        helpers.consola.debug(`${data.message}: ${ip}`);
+        helpers.consola.debug(`${data.message}: ${identifier}`);
         return res.status(401).send({ success: false, message: data?.message });
       }
 
@@ -28,7 +31,7 @@ class userController {
       });
 
       if (!user) {
-        helpers.consola.debug(`Invalid discordId: ${ip}`);
+        helpers.consola.debug(`Invalid discordId: ${identifier}`);
         return res
           .status(400)
           .send({ success: false, message: "Invalid discordId" });
@@ -37,14 +40,15 @@ class userController {
       user.ip = ip;
       user.save();
 
-      helpers.consola.debug(`Logged in: ${ip}`);
+      helpers.consola.debug(`Logged in: ${identifier}`);
       return res.status(200).send({
         success: true,
         message: "Logged in",
         data: data.discordData,
         userToken: data.userToken,
       });
-    } catch (err) {
+    } catch (err: any) {
+      helpers.consola.debug(`${err.code}: ${identifier}`);
       return res
         .status(500)
         .send({ success: false, message: "Internal server error", err });
@@ -54,12 +58,15 @@ class userController {
   static async userAccess(req: Request, res: Response) {
     const ip = req.ip.split(":").pop() || "0.0.0.0";
 
+    const account = await helpers.discord.getInfoByIP(ip);
+    const identifier = account?.success ? account.data.username : ip;
+
     try {
       const { userToken } = req.params;
       const { hwid } = req.query;
 
       if (!userToken) {
-        helpers.consola.debug(`Invalid request: ${ip}`);
+        helpers.consola.debug(`Invalid request: ${identifier}`);
         return res
           .status(401)
           .send({ success: false, message: "Invalid request" });
@@ -68,7 +75,7 @@ class userController {
       const data = await helpers.verify.verifyToken(userToken);
 
       if (!data?.success) {
-        console.log(data?.message);
+        helpers.consola.debug(`${data.message}: ${identifier}`);
         return res.status(401).send({ success: false, message: data?.message });
       }
 
@@ -77,7 +84,7 @@ class userController {
       });
 
       if (!user) {
-        helpers.consola.debug(`Invalid discordId: ${ip}`);
+        helpers.consola.debug(`Invalid discordId: ${identifier}`);
         return res
           .status(400)
           .send({ success: false, message: "Invalid discordId" });
@@ -93,7 +100,7 @@ class userController {
           data.hwid !== process.env.HWID_RESET_PLACEHOLDER &&
           data.hwid !== hwid
         ) {
-          helpers.consola.debug(`HWID mismatch: ${ip}`);
+          helpers.consola.debug(`HWID mismatch: ${identifier}`);
           return res
             .status(400)
             .send({ success: false, message: "HWID mismatch" });
@@ -105,13 +112,14 @@ class userController {
       }
 
       user.save();
-      helpers.consola.debug(`Access granted: ${ip}`);
+      helpers.consola.debug(`Access granted: ${identifier}`);
       return res.status(200).send({
         success: true,
         message: "Access granted",
         data: data.discordData,
       });
-    } catch (err) {
+    } catch (err: any) {
+      helpers.consola.debug(`${err.code}: ${identifier}`);
       return res
         .status(500)
         .send({ success: false, message: "Internal server error", err });

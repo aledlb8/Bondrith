@@ -1,71 +1,71 @@
 // import packages
-import express, { Request, Response, NextFunction } from "express";
-import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
 import compression from "compression";
+import mongoose from "mongoose";
+import express from "express";
+import dotenv from "dotenv";
 import helmet from "helmet";
 import cors from "cors";
-import mongoose from "mongoose";
-import rateLimit from 'express-rate-limit';
 
 // import utilites
 import helpers from "./helpers";
 
 // import routes
-import userRoute from "./routes/user"
+import userRoute from "./routes/user";
+import devRoute from "./routes/dev";
+import path from "path";
+import startup from "./helpers/startup";
 
-// initialize
-const app = express();
-dotenv.config();
+startup()
+  .then(() => {
+    // initialize
+    const app = express();
+    dotenv.config();
 
-helpers.consola.info("Connecting to database");
+    const db = mongoose.connection;
 
-// connect to database
-mongoose.connect(process.env.MONGO_URI||"");
-mongoose.set("strictQuery", true)
+    db.on("error", (err) => helpers.consola.error(`Database error: ${err}`));
+    db.once("open", () => helpers.consola.success("Database connected"));
 
-const db = mongoose.connection;
+    // set up routes
+    app.use("/api/user", userRoute);
+    app.use("/", devRoute);
 
-db.on('error', (err) => helpers.consola.error(`Database error: ${err}`));
-db.once('open', () => helpers.consola.success("Database loaded"));
+    app.use((req, res, next) => {
+      res.header("Access-Control-Allow-Origin", "*")
+    })
 
-const rateLimiter = rateLimit({
-  windowMs: 60 * 1000, // 1 minute
-  max: 15, // limit each IP to 15 requests per windowMs
-  message: 'Too many requests, please try again later'
-});
+    // set up middlewares
+    app.use(express.static(path.join(__dirname, "client/build")));
 
-helpers.consola.info("Starting middlewares");
+    app.get('*', (req, res) => {
+      res.sendFile(path.join(__dirname, "client/build", "index.html"))
+    });
 
-// set up routes
-app.use('/api/user', userRoute);
+    app.use(cookieParser())
+    app.use(compression());
+    app.use(helmet());
+    app.use(cors({ origin: "*" }));
 
-// set up middlewares
-app.use(compression());
-app.use(helmet());
-app.use(cors());
+    app.use(express.urlencoded({ extended: true }));
+    app.use(express.json());
 
-// Apply the rate limiter to all routes
-app.use(rateLimiter);
+    app.listen(process.env.PORT, () => {
+      helpers.consola.success("Server started");
+    });
 
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+    helpers.consola.info("Starting bot");
+    require("./bot");
 
-app.listen(process.env.PORT, () => {
-    helpers.consola.success("Server loaded");
-})
-
-helpers.consola.info("Starting bot");
-require("./bot")
-
-// env checks
-if (!process.env.ENCRYPT_KEY || typeof process.env.ENCRYPT_KEY !== 'string' || process.env.ENCRYPT_KEY.length !== 32) {
-  console.log('ENCRYPT_KEY is not defined or not of valid type or length');
-}
-
-if (!process.env.JWT_SECRET || typeof process.env.JWT_SECRET !== 'string' || process.env.JWT_SECRET.length !== 32) {
-  console.log('JWT_SECRET is not defined or not of valid type or length');
-}
-
-if (!process.env.AUTH_TOKEN || typeof process.env.AUTH_TOKEN !== 'string' || process.env.AUTH_TOKEN.length !== 32) {
-  console.log('AUTH_TOKEN is not defined or not of valid type or length');
-}
+    process.on("uncaughtException", (err) => {
+      helpers.consola.error(
+        `\x1b[31m* Port ${process.env.PORT} is already in use\x1b[0m`
+      );
+      helpers.consola.error(
+        `\x1b[33m* Make sure to change port or shut down any other application\x1b[0m`
+      );
+    });
+  })
+  .catch((err) => {
+    helpers.consola.error(err)
+  });

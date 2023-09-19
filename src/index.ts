@@ -3,7 +3,6 @@ import cookieParser from "cookie-parser";
 import compression from "compression";
 import mongoose from "mongoose";
 import express from "express";
-import dotenv from "dotenv";
 import helmet from "helmet";
 import cors from "cors";
 
@@ -20,7 +19,6 @@ startup()
   .then(() => {
     // initialize
     const app = express();
-    dotenv.config();
 
     const db = mongoose.connection;
 
@@ -36,12 +34,6 @@ startup()
     })
 
     // set up middlewares
-    app.use(express.static(path.join(__dirname, "client/build")));
-
-    app.get('*', (req, res) => {
-      res.sendFile(path.join(__dirname, "client/build", "index.html"))
-    });
-
     app.use(cookieParser())
     app.use(compression());
     app.use(helmet());

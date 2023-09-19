@@ -5,8 +5,6 @@ import axios from "axios";
 class discord {
     static async getInfoByID(id: string) {
         try {
-            console.log(id)
-
             const res = await axios({
                 method: "GET",
                 headers: { Authorization: `Bot ${process.env.TOKEN}` },

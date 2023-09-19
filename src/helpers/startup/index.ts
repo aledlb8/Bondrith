@@ -1,7 +1,10 @@
 import mongoose from "mongoose";
+import dotenv from "dotenv";
 import helpers from "..";
 
 const startup = async () => {
+    dotenv.config();
+
     const requiredEnvVars = [
         "PORT",
         "HWID_RESET_PLACEHOLDER",
@@ -49,7 +52,7 @@ const startup = async () => {
     helpers.consola.info("Connecting to database");
 
     // connect to database
-    mongoose.connect(process.env.MONGO_URI || "");
+    mongoose.connect(process.env.MONGO_URI as string);
     mongoose.set("strictQuery", true);
 }
 

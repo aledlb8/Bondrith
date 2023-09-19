@@ -8,6 +8,7 @@ import {
     ActionRowBuilder,
 } from "discord.js";
 import { SlashCommand } from "../../../types";
+import userModel from "../../models/user";
 
 const command: SlashCommand = {
     enable: true,
@@ -15,7 +16,23 @@ const command: SlashCommand = {
         .setName("userupdate")
         .setDescription("Update your account discord"),
     execute: async (interaction: CommandInteraction) => {
+        const user = await userModel.findOne({ discordId: interaction.user.id });
+
         try {
+            if (user) {
+                return interaction.reply({
+                    embeds: [
+                        new EmbedBuilder()
+                            .setColor("#FBC630")
+                            .setTimestamp()
+                            .setDescription(
+                                `Uh oh! you already have a ${process.env.NAME} account linked`
+                            ),
+                    ],
+                    ephemeral: true,
+                });
+            }
+
             const modal = new ModalBuilder()
                 .setCustomId("discordupdate")
                 .setTitle("Update you account discord");

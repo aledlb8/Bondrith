@@ -3,6 +3,10 @@ import dotenv from "dotenv";
 import helpers from "..";
 
 const startup = async () => {
+    helpers.consola.warn()
+    helpers.consola.warn("!! PRODUCT IS IN BETA AND SHOULD NOT BE USED IN PRODUCTION !!")
+    helpers.consola.warn()
+
     dotenv.config();
 
     const requiredEnvVars = [
@@ -53,7 +57,6 @@ const startup = async () => {
 
     // connect to database
     mongoose.connect(process.env.MONGO_URI as string);
-    mongoose.set("strictQuery", true);
 }
 
 export default startup;

@@ -1,26 +1,34 @@
 import { createHash, createCipheriv, createDecipheriv, randomBytes, createHmac } from 'crypto';
 import helpers from '..';
-import { deprecate } from 'util';
 
 const algorithm = 'aes-256-ctr';
 
-const key = createHash("sha256")
-  .update(String(process.env.ENCRYPT_KEY))
-  .digest("base64")
-  .substring(0, 32);
-const iv = randomBytes(16);
+class CryptoUtils {
+  private static getKeyFromEnv(): string {
+    const envEncryptKey = process.env.ENCRYPT_KEY;
+    if (!envEncryptKey || typeof envEncryptKey !== 'string') {
+      throw new Error('Invalid or missing ENCRYPT_KEY in environment variables.');
+    }
 
-class crypto {
-  static encrypt(text: string) {
+    return createHash("sha256")
+      .update(envEncryptKey)
+      .digest("base64")
+      .substring(0, 32);
+  }
+
+  static encrypt(text: string): string {
+    const key = this.getKeyFromEnv();
+    const iv = randomBytes(16);
     const cipher = createCipheriv(algorithm, key, iv);
 
     const buffer = Buffer.concat([cipher.update(text), cipher.final()]);
-
     const hash = iv.toString("hex") + `**${process.env.NAME}**` + buffer.toString("hex");
+
     return Buffer.from(hash).toString("base64");
   }
 
-  static decrypt(text: string) {
+  static decrypt(text: string): string {
+    const key = this.getKeyFromEnv();
     const buffer = Buffer.from(text, "base64").toString("ascii");
     const hash = buffer.split(`**${process.env.NAME}**`);
 
@@ -44,10 +52,9 @@ class crypto {
   }
 
   static genUserInfo() {
-    if (!process.env.ENCRYPT_KEY || typeof process.env.ENCRYPT_KEY !== 'string') return;
-
     const id = randomBytes(8).toString('hex');
-    const token = createHmac('sha256', process.env.ENCRYPT_KEY)
+    const encryptKey = this.getKeyFromEnv();
+    const token = createHmac('sha256', encryptKey)
       .update(id)
       .digest('hex');
     return { id, token };
@@ -61,4 +68,4 @@ class crypto {
   }
 }
 
-export default crypto;
+export default CryptoUtils;

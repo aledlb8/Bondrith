@@ -1,35 +1,39 @@
-import mongoose from 'mongoose';
+import mongoose, { Document, Schema } from 'mongoose';
 
-const userSchema = new mongoose.Schema({
+interface IUser extends Document {
+    id: number;
+    secret: string;
+    ip?: string;
+    hwid?: string;
+    discordId: string;
+    createdAt: Date;
+}
+
+const userSchema = new Schema<IUser>({
     id: {
         type: Number,
         required: true,
-        uniquie: true
+        unique: true,
     },
     secret: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
     },
-    ip: {
-        type: String,
-        required: false
-    },
-    hwid: {
-        type: String,
-        required: false
-    },
+    ip: String,
+    hwid: String,
     discordId: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
     },
     createdAt: {
         type: Date,
-        default: Date.now
-    }
+        default: Date.now,
+    },
 });
 
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model<IUser>('User', userSchema);
 
 export default User;
+export { IUser };

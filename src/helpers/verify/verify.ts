@@ -1,39 +1,56 @@
-import userModel from "../../models/user";
-import keyModel from "../../models/key";
+import userModel, { IUser } from "../../models/user";
+import keyModel, { IKey } from "../../models/key";
 import helpers from "..";
 
-class verify {
-  private static async verifyUser(user: any) {
-    const data = helpers.jwt.verify(user.secret);
+interface VerificationResult {
+  success: boolean;
+  message: string;
+  discordData?: any;
+  userId?: string;
+  userToken?: string;
+  hwid?: string;
+}
 
-    if (!data?.success || !data.data) {
-      return { success: false, message: data?.message };
-    }
-
-    const userId = helpers.crypto.decrypt(data.data.userId);
-    const userToken = helpers.crypto.decrypt(data.data.userToken);
-
+class VerificationService {
+  private static async verifyUser(user: IUser) {
     try {
-      const res = await helpers.discord.getInfoByID(user.discordId);
+      const decodedToken = helpers.jwt.verify(user.secret);
 
-      if (!res?.data) {
+      if (!decodedToken?.success || !decodedToken.data) {
+        return { success: false, message: decodedToken?.message || "Invalid token" };
+      }
+
+      const userId = helpers.crypto.decrypt(decodedToken.data.userId);
+      const userToken = helpers.crypto.decrypt(decodedToken.data.userToken);
+
+      const discordDataResult = await helpers.discord.getInfoByID(user.discordId);
+
+      if (!discordDataResult?.data) {
         return { success: false, message: "Invalid discordId" };
       }
 
-      return { success: true, userId, userToken, discordData: res.data };
+      return {
+        success: true,
+        userId,
+        userToken,
+        discordData: discordDataResult.data,
+      };
     } catch (error) {
       helpers.consola.error(error);
       return { success: false, message: "Error verifying user" };
     }
   }
 
-  static async verifyId(id: string) {
-    if (id.length !== 16) return { success: false, message: "Invalid id" };
+  static async verifyId(id: string): Promise<VerificationResult> {
+    if (id.length !== 16) {
+      return { success: false, message: "Invalid id" };
+    }
 
     const users = await userModel.find();
 
     for (const user of users) {
       const result = await this.verifyUser(user);
+
       if (result.success && result.userId === id) {
         return {
           success: true,
@@ -47,13 +64,16 @@ class verify {
     return { success: false, message: "Invalid id" };
   }
 
-  static async verifyToken(token: string) {
-    if (token.length !== 64) return { success: false, message: "Invalid token" };
+  static async verifyToken(token: string): Promise<VerificationResult> {
+    if (token.length !== 64) {
+      return { success: false, message: "Invalid token" };
+    }
 
     const users = await userModel.find();
 
     for (const user of users) {
       const result = await this.verifyUser(user);
+
       if (result.success && result.userToken === token) {
         return {
           success: true,
@@ -67,14 +87,16 @@ class verify {
     return { success: false, message: "Invalid token" };
   }
 
-  static async verifyKey(key: string) {
-    if (key.length !== 24) return { success: false, message: "Invalid key" };
+  static async verifyKey(key: string): Promise<VerificationResult> {
+    if (key.length !== 24) {
+      return { success: false, message: "Invalid key" };
+    }
 
     const keys = await keyModel.find();
 
-    const foundKeyData = keys.find((data) => {
-      const keyData = helpers.crypto.decrypt(data.key);
-      return keyData === key && helpers.pkv.verify(key);
+    const foundKeyData = keys.find((data: IKey) => {
+      const decryptedKey = helpers.crypto.decrypt(data.key);
+      return decryptedKey === key && helpers.pkv.verify(key);
     });
 
     return foundKeyData
@@ -83,4 +105,4 @@ class verify {
   }
 }
 
-export default verify;
+export default VerificationService;

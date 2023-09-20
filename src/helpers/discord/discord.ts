@@ -1,47 +1,67 @@
-import userModel from "../../models/user";
+import axios, { AxiosResponse } from "axios";
+import userModel, { IUser } from "../../models/user";
 import helpers from "..";
-import axios from "axios";
 
-class discord {
-    static async getInfoByID(id: string) {
+interface DiscordUserInfo {
+    success: boolean;
+    message?: string;
+    data?: any;
+}
+
+class DiscordService {
+    static async getInfoByID(id: string): Promise<DiscordUserInfo> {
         try {
-            const res = await axios({
-                method: "GET",
-                headers: { Authorization: `Bot ${process.env.TOKEN}` },
-                url: `https://discord.com/api/v9/users/${id}`,
-            });
+            const response: AxiosResponse | undefined = await this.fetchDiscordUser(id);
 
-            if (!res.data) return { success: false, message: "Invalid discordId" };
+            if (!response) {
+                return { success: false, message: "Invalid discordId" };
+            }
 
-            return { success: true, data: res.data };
+            return { success: true, data: response.data };
         } catch (error) {
-            console.log(error)
-            helpers.consola.error(error)
+            this.handleError(error);
+            return { success: false, message: "An error occurred" };
         }
     }
-    static async getInfoByIP(ip: string) {
+
+    static async getInfoByIP(ip: string): Promise<DiscordUserInfo> {
         try {
-            const account = await userModel.findOne({
-                ip,
-            });
+            const account: IUser | null = await userModel.findOne({ ip });
 
             if (!account) {
                 return { success: false, message: "Invalid IP" };
             }
 
-            const res = await axios({
+            const response: AxiosResponse | undefined = await this.fetchDiscordUser(account.discordId);
+
+            if (!response) {
+                return { success: false, message: "Invalid discordId" };
+            }
+
+            return { success: true, data: response.data };
+        } catch (error) {
+            this.handleError(error);
+            return { success: false, message: "An error occurred" };
+        }
+    }
+
+    private static async fetchDiscordUser(id: string): Promise<AxiosResponse | undefined> {
+        try {
+            return await axios({
                 method: "GET",
                 headers: { Authorization: `Bot ${process.env.TOKEN}` },
-                url: `https://discord.com/api/v9/users/${account.discordId}`,
+                url: `https://discord.com/api/v9/users/${id}`,
             });
-
-            if (!res.data) return { success: false, message: "Invalid discordId" };
-
-            return { success: true, data: res.data };
         } catch (error) {
-            helpers.consola.error(error)
+            this.handleError(error);
+            return undefined;
         }
+    }
+
+    private static handleError(error: any): void {
+        console.error(error);
+        helpers.consola.error(error);
     }
 }
 
-export default discord;
+export default DiscordService;

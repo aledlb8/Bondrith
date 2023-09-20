@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 import express from "express";
 import helmet from "helmet";
 import cors from "cors";
+import path from "path";
 
 // import utilites
 import helpers from "./helpers";
@@ -12,10 +13,8 @@ import helpers from "./helpers";
 // import routes
 import userRoute from "./routes/user";
 import devRoute from "./routes/dev";
-import path from "path";
-import startup from "./helpers/startup";
 
-startup()
+helpers.startup()
   .then(() => {
     // initialize
     const app = express();
@@ -34,6 +33,12 @@ startup()
     })
 
     // set up middlewares
+    // app.use(express.static(path.join(__dirname, "client/build")));
+
+    // app.get('*', (req, res) => {
+    //   res.sendFile(path.join(__dirname, "client/build", "index.html"))
+    // });
+
     app.use(cookieParser())
     app.use(compression());
     app.use(helmet());

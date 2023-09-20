@@ -37,8 +37,6 @@ function App() {
         return;
       }
 
-      // window.localStorage.setItem('', '');
-
       // window.location.href = '/dashboard';
     } catch (error) {
       console.error( error);

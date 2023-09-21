@@ -85,6 +85,6 @@ This auth has rate limiting to prevent abuse. The rate limits are as follows:
 
 ## Changelog
 
-### [0.1] - 2023-08-27
+### [0.1] - 2023-09-21
 
 - Initial release

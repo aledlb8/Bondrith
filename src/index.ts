@@ -12,7 +12,6 @@ import helpers from "./helpers";
 
 // import routes
 import userRoute from "./routes/user";
-import devRoute from "./routes/dev";
 
 helpers.startup()
   .then(() => {
@@ -26,7 +25,6 @@ helpers.startup()
 
     // set up routes
     app.use("/api/user", userRoute);
-    app.use("/", devRoute);
 
     app.use((req, res, next) => {
       res.header("Access-Control-Allow-Origin", "*")

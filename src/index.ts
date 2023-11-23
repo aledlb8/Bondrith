@@ -30,13 +30,6 @@ helpers.startup()
       res.header("Access-Control-Allow-Origin", "*")
     })
 
-    // set up middlewares
-    // app.use(express.static(path.join(__dirname, "client/build")));
-
-    // app.get('*', (req, res) => {
-    //   res.sendFile(path.join(__dirname, "client/build", "index.html"))
-    // });
-
     app.use(cookieParser())
     app.use(compression());
     app.use(helmet());

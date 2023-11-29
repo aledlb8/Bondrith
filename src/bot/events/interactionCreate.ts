@@ -125,7 +125,7 @@ async function handleKeyDeletion(interaction: any) {
             new EmbedBuilder()
               .setColor("#FBC630")
               .setTimestamp()
-              .setDescription("That not found"),
+              .setDescription("Key not found"),
           ],
           ephemeral: true,
         });
@@ -192,7 +192,7 @@ async function handleKeyRedemption(interaction: any) {
             new EmbedBuilder()
               .setColor("#FBC630")
               .setTimestamp()
-              .setDescription(`You already own a ${process.env.NAME} copy`),
+              .setDescription(`You already have a ${process.env.NAME} account`),
           ],
           ephemeral: true,
         });

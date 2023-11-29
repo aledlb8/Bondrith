@@ -55,9 +55,9 @@ const command: SlashCommand = {
       const embedDetails = data
         .map((info) => {
           return [
-            `key: \`${helpers.crypto.decrypt(info.key)}\``,
-            `used: \`${info.used}\``,
-            `createdAt: \`${info.createdAt}\``,
+            `Key: \`${helpers.crypto.decrypt(info.key)}\``,
+            `Used: \`${info.used}\``,
+            `CreatedAt: \`${info.createdAt}\``,
           ].join("\n");
         })
         .join("\n\n");

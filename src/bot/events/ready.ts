@@ -8,7 +8,7 @@ const event: BotEvent = {
   once: true,
   execute: (client: Client) => {
     helpers.consola.success(
-      `Logged in as ${client.user?.tag} (${client.user?.id})`
+      `Logged in as ${client.user?.tag}`
     );
   },
 };

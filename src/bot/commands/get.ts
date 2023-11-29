@@ -58,7 +58,7 @@ const command: SlashCommand = {
           new EmbedBuilder()
             .setColor("#FBC630")
             .setTimestamp()
-            .setDescription(`Id: \`${userId}\`\nToken: \`${userToken}\``),
+            .setDescription(`ID: \`${userId}\`\nToken: \`${userToken}\``),
         ],
         ephemeral: true,
       });

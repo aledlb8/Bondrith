@@ -48,3 +48,18 @@ declare module "discord.js" {
     cooldowns: Collection<string, number>;
   }
 }
+
+export interface VerificationResult {
+  success: boolean;
+  message: string;
+  discordData?: any;
+  userId?: string;
+  userToken?: string;
+  hwid?: string;
+}
+
+export interface DiscordUserInfo {
+  success: boolean;
+  message?: string;
+  data?: any;
+}

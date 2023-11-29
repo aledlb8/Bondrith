@@ -58,7 +58,7 @@ const command: SlashCommand = {
             .setColor("#FBC630")
             .setTimestamp()
             .setDescription(
-              `ID: \`${data.id}\`\nUserId: \`${userId}\`\nUserToken: \`${userToken}\`\nIP: \`${data.ip}\`\nHWID: \`${data.hwid}\`\nUser: \<@${data.discordId}>\nCreatedAt: \`${data.createdAt}\``
+              `ID: \`${data.id}\`\nUserID: \`${userId}\`\nUserToken: \`${userToken}\`\nIP: \`${data.ip}\`\nHWID: \`${data.hwid}\`\nUser: \<@${data.discordId}>\nCreatedAt: \`${data.createdAt}\``
             ),
         ],
         ephemeral: true,

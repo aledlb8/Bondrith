@@ -1,15 +1,7 @@
 import userModel, { IUser } from "../../models/user";
 import keyModel, { IKey } from "../../models/key";
 import helpers from "..";
-
-interface VerificationResult {
-  success: boolean;
-  message: string;
-  discordData?: any;
-  userId?: string;
-  userToken?: string;
-  hwid?: string;
-}
+import { VerificationResult } from "../../../types";
 
 class VerificationService {
   private static async verifyUser(user: IUser) {

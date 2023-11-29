@@ -1,12 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 import userModel, { IUser } from "../../models/user";
 import helpers from "..";
-
-interface DiscordUserInfo {
-    success: boolean;
-    message?: string;
-    data?: any;
-}
+import { DiscordUserInfo } from "../../../types";
 
 class DiscordService {
     static async getInfoByID(id: string): Promise<DiscordUserInfo> {
@@ -50,7 +45,7 @@ class DiscordService {
             return await axios({
                 method: "GET",
                 headers: { Authorization: `Bot ${process.env.TOKEN}` },
-                url: `https://discord.com/api/v9/users/${id}`,
+                url: `https://discord.com/api/v10/users/${id}`,
             });
         } catch (error) {
             this.handleError(error);
@@ -59,7 +54,6 @@ class DiscordService {
     }
 
     private static handleError(error: any): void {
-        console.error(error);
         helpers.consola.error(error);
     }
 }

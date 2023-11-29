@@ -55,13 +55,13 @@ const command: SlashCommand = {
       const embedDetails = data
         .map((info) => {
           return [
-            `id: \`${info.id}\``,
-            `userId: \`${userid(info.secret)}\``,
-            `userToken: \`${usertoken(info.secret)}\``,
+            `ID: \`${info.id}\``,
+            `UserID: \`${userid(info.secret)}\``,
+            `UserToken: \`${usertoken(info.secret)}\``,
             `IP: \`${info.ip}\``,
             `HWID: \`${info.hwid}\``,
-            `user: <@${info.discordId}>`,
-            `createdAt: \`${info.createdAt}\``,
+            `User: <@${info.discordId}>`,
+            `CreatedAt: \`${info.createdAt}\``,
           ].join("\n");
         })
         .join("\n\n");

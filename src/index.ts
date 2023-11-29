@@ -46,12 +46,7 @@ helpers.startup()
     require("./bot");
 
     process.on("uncaughtException", (err) => {
-      helpers.consola.error(
-        `\x1b[31m* Port ${process.env.PORT} is already in use\x1b[0m`
-      );
-      helpers.consola.error(
-        `\x1b[33m* Make sure to change port or shut down any other application\x1b[0m`
-      );
+      helpers.consola.error(err);
     });
   })
   .catch((err) => {

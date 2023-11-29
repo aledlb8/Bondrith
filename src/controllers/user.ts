@@ -6,10 +6,10 @@ class userController {
   static async userLogin(req: Request, res: Response) {
     const ip = req.ip.split(":").pop() || "0.0.0.0";
 
-    const account = await helpers.discord.getInfoByIP(ip);
-    const identifier = account?.success ? account.data.username : ip;
-
     try {
+      const account = await helpers.discord.getInfoByIP(ip);
+      const identifier = account?.success ? account.data.username : ip;
+
       const { userId } = req.params;
 
       if (!userId) {
@@ -48,7 +48,7 @@ class userController {
         userToken: data.userToken,
       });
     } catch (err: any) {
-      helpers.consola.debug(`${err.code}: ${identifier}`);
+      helpers.consola.debug(`${err.code}: ${ip}`);
       return res
         .status(500)
         .send({ success: false, message: "Internal server error", err });
@@ -58,10 +58,10 @@ class userController {
   static async userAccess(req: Request, res: Response) {
     const ip = req.ip.split(":").pop() || "0.0.0.0";
 
-    const account = await helpers.discord.getInfoByIP(ip);
-    const identifier = account?.success ? account.data.username : ip;
-
     try {
+      const account = await helpers.discord.getInfoByIP(ip);
+      const identifier = account?.success ? account.data.username : ip;
+
       const { userToken } = req.params;
       const { hwid } = req.query;
 
@@ -119,7 +119,7 @@ class userController {
         data: data.discordData,
       });
     } catch (err: any) {
-      helpers.consola.debug(`${err.code}: ${identifier}`);
+      helpers.consola.debug(`${err.code}: ${ip}`);
       return res
         .status(500)
         .send({ success: false, message: "Internal server error", err });

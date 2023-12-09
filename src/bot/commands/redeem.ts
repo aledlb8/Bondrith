@@ -45,7 +45,7 @@ const command: SlashCommand = {
       });
     }
   },
-  cooldown: 10,
+  cooldown: 3,
 };
 
 export default command;

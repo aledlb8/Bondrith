@@ -28,46 +28,37 @@ const command: SlashCommand = {
           ephemeral: true,
         });
 
-      // const decryptedData = data.map(info => {
-      //     return {
-      //         ...info.toObject(),
-      //         secret: all(info.secret),
-      //     }
-      // })
+      let embeds = [];
 
-      // if(data.length > 3) {
-      //     const embeds = []
-      //     const infos = []
-      //     for(let key of data) {
-      //         infos.push(key)
-      //         if(infos.length === 3) {
-      //             embeds.push(new EmbedBuilder().setTitle("Keys").setDescription(`${infos.map(info => {
-      //                 `**key:** ${info.key}\n**used:** ${info.used}\n**createdAt:** ${info.createdAt}`}).join("\n\n ")}`).setColor("#FBC630"))
-      //             infos.length = 0
-      //         }
-      //     }
+      for (let i = 0; i < data.length; i++) {
+        const key = data[i];
+        embeds.push(helpers.utils.keyListEmbed(key));
+      }
+      helpers.utils.paginationEmbed(
+        interaction,
+        ["◀️", "Back", "Next", "▶️"],
+        embeds,
+        "60s",
+        false
+      );
 
-      //     if(infos.length) embeds.push(new EmbedBuilder().setDescription(`${infos.map(info => {
-      //         `**key:** ${info.key}\n**used:** ${info.used}\n**createdAt:** ${info.createdAt}`}).join("\n\n")}`).setColor("#FBC630"))
-      //     return interaction.followUp({ embeds: embeds })
-      // }
+      // const embedDetails = data
+      //   .map((info) => {
+      //     return [
+      //       `Key: \`${helpers.crypto.decrypt(info.key)}\``,
+      //       `Used: \`${info.used}\``,
+      //       `CreatedAt: \`${info.createdAt}\``,
+      //     ].join("\n");
+      //   })
+      //   .join("\n\n");
 
-      const embedDetails = data
-        .map((info) => {
-          return [
-            `Key: \`${helpers.crypto.decrypt(info.key)}\``,
-            `Used: \`${info.used}\``,
-            `CreatedAt: \`${info.createdAt}\``,
-          ].join("\n");
-        })
-        .join("\n\n");
-
-      const embed = new EmbedBuilder()
-        .setTitle("Keys")
-        .setDescription(embedDetails)
-        .setColor("#FBC630");
-      interaction.reply({ embeds: [embed], ephemeral: true });
+      // const embed = new EmbedBuilder()
+      //   .setTitle("Keys")
+      //   .setDescription(embedDetails)
+      //   .setColor("#FBC630");
+      // interaction.reply({ embeds: [embed], ephemeral: true });
     } catch (err) {
+      console.log(err)
       return interaction.reply({
         embeds: [
           new EmbedBuilder()
@@ -79,7 +70,7 @@ const command: SlashCommand = {
       });
     }
   },
-  cooldown: 10,
+  cooldown: 3,
 };
 
 export default command;

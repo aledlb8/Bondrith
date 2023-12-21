@@ -1,4 +1,4 @@
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, CommandInteraction, Interaction } from "discord.js";
+import {ActionRowBuilder, ButtonBuilder, ButtonStyle, CommandInteraction, EmbedBuilder} from "discord.js";
 import ms from "ms";
 import helpers from "..";
 
@@ -89,7 +89,7 @@ class Utils {
 
     static cancelAsk(fetchMessage: any, answer: boolean, interaction: CommandInteraction): boolean {
         if (!answer) {
-            interaction.editReply({ embeds: [fetchMessage.embeds[0].setColor("#FF0000")] });
+            interaction.editReply({embeds: [fetchMessage.embeds[0].setColor("#FF0000")]}).then(r => null);
             return true;
         } else {
             return false;
@@ -173,66 +173,46 @@ class Utils {
     }
 
     static userListEmbed(user: any): any {
-        function userid(data: any) {
+        function userId(data: any) {
             const secret = helpers.jwt.verify(data);
             if (!secret?.data) return;
-            const id = helpers.crypto.decrypt(secret?.data?.userId);
-            return id;
+            return helpers.crypto.decrypt(secret?.data?.userId);
         }
 
-        function usertoken(data: any) {
+        function userToken(data: any) {
             const secret = helpers.jwt.verify(data);
             if (!secret?.data) return;
-            const token = helpers.crypto.decrypt(secret?.data?.userToken);
-            return token;
+            return helpers.crypto.decrypt(secret?.data?.userToken);
         }
 
-        const _userid = `\`\`\`yaml\n${userid(user.secret) ?? 'N/A'}\n\`\`\``;
-        const _usertoken = `\`\`\`yaml\n${usertoken(user.secret) ?? 'N/A'}\n\`\`\``;
-
-        const embed = new EmbedBuilder()
-            .setTitle("Account Infos")
+        return new EmbedBuilder()
+            .setTitle("Account Info")
             .setDescription(`
 ● **Account Information**
 > ID: ${user.id?.toString() ?? 'N/A'}
-> UserID: ${_userid}/
-> UserToken: ${_usertoken}
+> UserID: \`${userId(user.secret) ?? 'N/A'}\`
+> UserToken: \`${userToken(user.secret) ?? 'N/A'}\`
 > Created at: ${user.createdAt ? `<t:${Math.floor(user.createdAt / 1000)}:R>` : 'N/A'}
 ● **User Information**
 > User: <@${user.discordId ?? '1081004946872352958'}>
 > IP: ${user.ip ?? 'N/A'}
 > HWID: ${user.hwid ?? 'N/A'}
 `)
-            // .addFields(
-            //     { name: "●", value: "**Account Information**" },
-            //     { name: "> ID", value: user.id?.toString() ?? 'N/A' },
-            //     { name: "> UserID", value: ` \`\`\`yaml\n${userid(user.secret) ?? 'N/A'}\`\`\` ` },
-            //     { name: "> UserToken", value: ` \`\`\`yaml\n${usertoken(user.secret) ?? 'N/A'}\`\`\` ` },
-            //     { name: "> Created at", value: user.createdAt ? `<t:${Math.floor(user.createdAt / 1000)}:R>` : 'N/A' },
-            //     { name: "●", value: "**User Information**" },
-            //     { name: "> User", value: `<@${user.discordId ?? 'N/A'}>` },
-            //     { name: "> IP", value: user.ip ?? 'N/A' },
-            //     { name: "> HWID", value: user.hwid ?? 'N/A' }
-            // )
             .setColor("#00FF00")
             .setTimestamp();
-
-        return embed;
     }
 
     static keyListEmbed(key: any): any {
-        const embed = new EmbedBuilder()
-            .setTitle("Key Infos")
-            .addFields(
-                { name: "●", value: "**Key Information**" },
-                { name: "> Key", value: ` \`\`\`yaml\n${helpers.crypto.decrypt(key.key) ?? 'N/A'}\`\`\` ` },
-                { name: "> Used", value: `${key.used}` ?? 'N/A' },
-                { name: "> Created at", value: key.createdAt ? `<t:${Math.floor(key.createdAt / 1000)}:R>` : 'N/A' }
-            )
+        return new EmbedBuilder()
+            .setTitle("Key Info")
+            .setDescription(`
+● **Key Information**
+> Key: ${helpers.crypto.decrypt(key.key) ?? 'N/A'}
+> Used: ${key.used ?? 'N/A'}
+> Created at: ${key.createdAt ? `<t:${Math.floor(key.createdAt / 1000)}:R>` : 'N/A'}
+            `)
             .setColor("#00FF00")
             .setTimestamp();
-
-        return embed;
     }
 }
 

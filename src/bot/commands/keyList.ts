@@ -34,12 +34,12 @@ const command: SlashCommand = {
         const key = data[i];
         embeds.push(helpers.utils.keyListEmbed(key));
       }
-      helpers.utils.paginationEmbed(
-        interaction,
-        ["◀️", "Back", "Next", "▶️"],
-        embeds,
-        "60s",
-        false
+      await helpers.utils.paginationEmbed(
+          interaction,
+          ["◀️", "Back", "Next", "▶️"],
+          embeds,
+          "60s",
+          false
       );
 
       // const embedDetails = data

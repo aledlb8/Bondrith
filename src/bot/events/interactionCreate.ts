@@ -40,16 +40,12 @@ const event: BotEvent = {
       try {
         command.execute(interaction);
       } catch (error: any) {
-        handleCommandError(interaction, error);
+        await handleCommandError(interaction, error);
       }
     } else if (interaction.isAutocomplete()) {
       handleAutocomplete(interaction);
-    } else if (interaction.isButton()) {
-      if (interaction.customId === "test") {
-        // Handle button interaction if needed
-      }
     } else if (interaction.isModalSubmit()) {
-      handleModalSubmit(interaction);
+      await handleModalSubmit(interaction);
     } else if (interaction.isContextMenuCommand()) {
       const context = interaction.client.commands.get(interaction.commandName);
       if (!context || !context.enable) {
@@ -61,14 +57,14 @@ const event: BotEvent = {
       try {
         context.execute(interaction);
       } catch (error: any) {
-        handleCommandError(interaction, error);
+        await handleCommandError(interaction, error);
       }
     }
   },
 };
 
 async function handleCommandError(interaction: any, error: any) {
-  console.error(error);
+  helpers.consola.error(error);
   await interaction.reply({
     embeds: [
       new EmbedBuilder()

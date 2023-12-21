@@ -34,35 +34,15 @@ const command: SlashCommand = {
         const license = data[i];
         embeds.push(helpers.utils.userListEmbed(license));
       }
-      helpers.utils.paginationEmbed(
-        interaction,
-        ["◀️", "Back", "Next", "▶️"],
-        embeds,
-        "60s",
-        false
+
+      await helpers.utils.paginationEmbed(
+          interaction,
+          ["◀️", "Back", "Next", "▶️"],
+          embeds,
+          "60s",
+          false
       );
-
-      // const embedDetails = data
-      //   .map((info) => {
-      //     return [
-      //       `ID: \`${info.id}\``,
-      //       `UserID: \`${userid(info.secret)}\``,
-      //       `UserToken: \`${usertoken(info.secret)}\``,
-      //       `IP: \`${info.ip}\``,
-      //       `HWID: \`${info.hwid}\``,
-      //       `User: <@${info.discordId}>`,
-      //       `CreatedAt: \`${info.createdAt}\``,
-      //     ].join("\n");
-      //   })
-      //   .join("\n\n");
-
-      // const embed = new EmbedBuilder()
-      //   .setTitle("Account Infos")
-      //   .setDescription(embedDetails)
-      //   .setColor("#FBC630");
-      // interaction.reply({ embeds: [embed], ephemeral: true });
     } catch (err) {
-      console.log(err)
       return interaction.reply({
         embeds: [
           new EmbedBuilder()

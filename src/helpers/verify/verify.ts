@@ -4,18 +4,32 @@ import helpers from "..";
 import { VerificationResult } from "../../../types";
 
 class VerificationService {
+  /**
+   * Verifies a user object by decoding their JWT token, decrypting the token data,
+   * retrieving their Discord user data, and returning the decrypted user ID, token,
+   * and Discord data if valid.
+   *
+   * @param user - The user object to verify
+   * @returns A VerificationResult object indicating success/failure, decrypted user ID and token,
+   * and Discord user data if valid
+   */
   private static async verifyUser(user: IUser) {
     try {
       const decodedToken = helpers.jwt.verify(user.secret);
 
       if (!decodedToken?.success || !decodedToken.data) {
-        return { success: false, message: decodedToken?.message || "Invalid token" };
+        return {
+          success: false,
+          message: decodedToken?.message || "Invalid token",
+        };
       }
 
       const userId = helpers.crypto.decrypt(decodedToken.data.userId);
       const userToken = helpers.crypto.decrypt(decodedToken.data.userToken);
 
-      const discordDataResult = await helpers.discord.getInfoByID(user.discordId);
+      const discordDataResult = await helpers.discord.getInfoByID(
+        user.discordId
+      );
 
       if (!discordDataResult?.data) {
         return { success: false, message: "Invalid discordId" };

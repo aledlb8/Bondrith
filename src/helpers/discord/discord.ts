@@ -3,59 +3,95 @@ import userModel, { IUser } from "../../models/user";
 import helpers from "..";
 import { DiscordUserInfo } from "../../../types";
 
+/**
+ * DiscordService provides utility functions for retrieving user info from the Discord API.
+ *
+ * It contains methods to look up a user by their Discord ID or IP address.
+ * The methods make requests to the Discord API and return a DiscordUserInfo object.
+ *
+ * The class handles errors and logging internally.
+ * The methods are static so they can be called directly on the class.
+ */
 class DiscordService {
-    static async getInfoByID(id: string): Promise<DiscordUserInfo> {
-        try {
-            const response: AxiosResponse | undefined = await this.fetchDiscordUser(id);
+  /**
+   * Fetches a Discord user by their ID.
+   *
+   * @param id The Discord user ID to look up.
+   * @returns A Promise resolving to a DiscordUserInfo object containing the lookup result.
+   */
+  static async getInfoByID(id: string): Promise<DiscordUserInfo> {
+    try {
+      const response: AxiosResponse | undefined = await this.fetchDiscordUser(
+        id
+      );
 
-            if (!response) {
-                return { success: false, message: "Invalid discordId" };
-            }
+      if (!response) {
+        return { success: false, message: "Invalid discordId" };
+      }
 
-            return { success: true, data: response.data };
-        } catch (error) {
-            this.handleError(error);
-            return { success: false, message: "An error occurred" };
-        }
+      return { success: true, data: response.data };
+    } catch (error) {
+      this.handleError(error);
+      return { success: false, message: "An error occurred" };
     }
+  }
 
-    static async getInfoByIP(ip: string): Promise<DiscordUserInfo> {
-        try {
-            const account: IUser | null = await userModel.findOne({ ip });
+  /**
+   * Fetches a Discord user by their IP address.
+   *
+   * @param ip The IP address to look up.
+   * @returns A Promise resolving to a DiscordUserInfo object containing the lookup result.
+   */
+  static async getInfoByIP(ip: string): Promise<DiscordUserInfo> {
+    try {
+      const account: IUser | null = await userModel.findOne({ ip });
 
-            if (!account) {
-                return { success: false, message: "Invalid IP" };
-            }
+      if (!account) {
+        return { success: false, message: "Invalid IP" };
+      }
 
-            const response: AxiosResponse | undefined = await this.fetchDiscordUser(account.discordId);
+      const response: AxiosResponse | undefined = await this.fetchDiscordUser(
+        account.discordId
+      );
 
-            if (!response) {
-                return { success: false, message: "Invalid discordId" };
-            }
+      if (!response) {
+        return { success: false, message: "Invalid discordId" };
+      }
 
-            return { success: true, data: response.data };
-        } catch (error) {
-            this.handleError(error);
-            return { success: false, message: "An error occurred" };
-        }
+      return { success: true, data: response.data };
+    } catch (error) {
+      this.handleError(error);
+      return { success: false, message: "An error occurred" };
     }
+  }
 
-    private static async fetchDiscordUser(id: string): Promise<AxiosResponse | undefined> {
-        try {
-            return await axios({
-                method: "GET",
-                headers: { Authorization: `Bot ${process.env.TOKEN}` },
-                url: `https://discord.com/api/v10/users/${id}`,
-            });
-        } catch (error) {
-            this.handleError(error);
-            return undefined;
-        }
+  /**
+   * Fetches a Discord user by their user ID.
+   *
+   * @param id The Discord user ID to fetch.
+   * @returns A Promise resolving to the Axios response from the API call, or undefined on error.
+   */
+  private static async fetchDiscordUser(
+    id: string
+  ): Promise<AxiosResponse | undefined> {
+    try {
+      return await axios({
+        method: "GET",
+        headers: { Authorization: `Bot ${process.env.TOKEN}` },
+        url: `https://discord.com/api/v10/users/${id}`,
+      });
+    } catch (error) {
+      this.handleError(error);
+      return undefined;
     }
+  }
 
-    private static handleError(error: any): void {
-        helpers.consola.error(error);
-    }
+  /**
+   * Logs an error to the console.
+   */
+  private static handleError(error: any): void {
+    helpers.consola.error(error);
+  }
 }
 
 export default DiscordService;

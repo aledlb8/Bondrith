@@ -23,6 +23,11 @@ enum BackgroundColor {
   Grey = "\x1b[100m",
 }
 
+/**
+ * Gets the current time formatted as HH:MM:SS.
+ *
+ * @returns The current time as a formatted string.
+ */
 function getCurrentTime(): string {
   const now = new Date();
   const hours = now.getHours().toString().padStart(2, "0");
@@ -31,17 +36,34 @@ function getCurrentTime(): string {
   return `${TextColor.White}[${TextColor.Cyan}${hours}${TextColor.White}:${TextColor.Cyan}${minutes}${TextColor.White}:${TextColor.Cyan}${seconds}${TextColor.White}]${TextColor.Reset}`;
 }
 
+/**
+ * Interface for logger functions.
+ *
+ * @param message - The message to log.
+ */
 interface Logger {
   (message?: any): void;
 }
 
+/**
+ * Creates a logger function for the given log level and color.
+ *
+ * @param level - The log level.
+ * @param color - The color for the log level text.
+ * @returns A logger function.
+ */
 const createLogger = (level: string, color: TextColor): Logger => {
   return (message?: any): void => {
-    const text = `${getCurrentTime()} ${TextColor.White}[${color}${level}${TextColor.White}] ${TextColor.Reset}${message !== undefined ? message : ' '}`;
+    const text = `${getCurrentTime()} ${TextColor.White}[${color}${level}${
+      TextColor.White
+    }] ${TextColor.Reset}${message !== undefined ? message : " "}`;
     console.log(text);
   };
 };
 
+/**
+ * The Consola logger API.
+ */
 const consola = {
   success: createLogger("SUCCESS", TextColor.Green),
   error: createLogger("ERROR", TextColor.Red),

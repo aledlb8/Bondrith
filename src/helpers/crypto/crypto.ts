@@ -3,11 +3,23 @@ import helpers from '..';
 
 const algorithm = 'aes-256-ctr';
 
+/**
+ * CryptoUtils provides encryption, decryption and key generation utilities.
+ *
+ * The encrypt and decrypt methods use AES-256-CTR to encrypt and decrypt strings.
+ * Keys are derived from the ENCRYPT_KEY environment variable.
+ *
+ * The genUserInfo method generates a random user ID and token.
+ *
+ * The genKey method generates a cryptographic key using a seed and PKV helper.
+ */
 class CryptoUtils {
   private static getKeyFromEnv(): string {
     const envEncryptKey = process.env.ENCRYPT_KEY;
-    if (!envEncryptKey || typeof envEncryptKey !== 'string') {
-      throw new Error('Invalid or missing ENCRYPT_KEY in environment variables.');
+    if (!envEncryptKey || typeof envEncryptKey !== "string") {
+      throw new Error(
+        "Invalid or missing ENCRYPT_KEY in environment variables."
+      );
     }
 
     return createHash("sha256")
@@ -22,7 +34,8 @@ class CryptoUtils {
     const cipher = createCipheriv(algorithm, key, iv);
 
     const buffer = Buffer.concat([cipher.update(text), cipher.final()]);
-    const hash = iv.toString("hex") + `**${process.env.NAME}**` + buffer.toString("hex");
+    const hash =
+      iv.toString("hex") + `**${process.env.NAME}**` + buffer.toString("hex");
 
     return Buffer.from(hash).toString("base64");
   }
@@ -52,11 +65,9 @@ class CryptoUtils {
   }
 
   static genUserInfo() {
-    const id = randomBytes(8).toString('hex');
+    const id = randomBytes(8).toString("hex");
     const encryptKey = this.getKeyFromEnv();
-    const token = createHmac('sha256', encryptKey)
-      .update(id)
-      .digest('hex');
+    const token = createHmac("sha256", encryptKey).update(id).digest("hex");
     return { id, token };
   }
 

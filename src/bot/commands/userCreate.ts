@@ -1,7 +1,7 @@
 import {
   SlashCommandBuilder,
   EmbedBuilder,
-  PermissionFlagsBits,
+  PermissionFlagsBits, User,
 } from "discord.js";
 import { SlashCommand } from "../../../types";
 import helpers from "../../helpers";
@@ -20,7 +20,7 @@ const command: SlashCommand = {
     )
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
   execute: async (interaction) => {
-    const user = interaction.options.getUser("user");
+    const user: User | null = interaction.options.getUser("user");
 
     try {
       const userCheck = await userModel.findOne({ discordId: user?.id });
@@ -49,8 +49,8 @@ const command: SlashCommand = {
           ephemeral: true,
         });
 
-      const userId = helpers.crypto.encrypt(data.id);
-      const userToken = helpers.crypto.encrypt(data.token);
+      const userId: string = helpers.crypto.encrypt(data.id);
+      const userToken: string = helpers.crypto.encrypt(data.token);
 
       if (!userId || !userToken)
         return interaction.reply({
@@ -63,7 +63,7 @@ const command: SlashCommand = {
           ephemeral: true,
         });
 
-      const secret = helpers.jwt.generate(userId, userToken);
+      const secret: string | undefined = helpers.jwt.generate(userId, userToken);
 
       let nextId: number;
 

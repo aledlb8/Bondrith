@@ -12,14 +12,14 @@ export interface SlashCommand {
   command: SlashCommandBuilder | any;
   execute: (interaction: CommandInteraction) => void;
   autocomplete?: (interaction: AutocompleteInteraction) => void;
-  cooldown?: number; // in seconds
+  cooldown?: number;
 }
 
 export interface BotEvent {
   name: string;
   enable: boolean;
   once?: boolean | false;
-  execute: (...args) => void;
+  execute: (...args: any[]) => void;
 }
 
 declare global {
@@ -49,7 +49,7 @@ declare module "discord.js" {
   }
 }
 
-export interface VerificationResult {
+export type VerificationResult = {
   success: boolean;
   message: string;
   discordData?: any;
@@ -58,7 +58,7 @@ export interface VerificationResult {
   hwid?: string;
 }
 
-export interface DiscordUserInfo {
+export type DiscordUserInfo = {
   success: boolean;
   message?: string;
   data?: any;

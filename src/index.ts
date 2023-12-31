@@ -7,7 +7,7 @@ import helmet from "helmet";
 import cors from "cors";
 import path from "path";
 
-// import utilites
+// import utilities
 import helpers from "./helpers";
 
 // import routes

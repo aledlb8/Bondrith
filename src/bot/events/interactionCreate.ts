@@ -55,7 +55,7 @@ const event: BotEvent = {
       }
 
       try {
-        context.execute(interaction);
+        return context.execute(interaction);
       } catch (error: any) {
         await handleCommandError(interaction, error);
       }
@@ -127,7 +127,7 @@ async function handleKeyDeletion(interaction: any) {
         });
       }
 
-      await data.delete();
+      await data.deleteOne();
       return await interaction.reply({
         embeds: [
           new EmbedBuilder()

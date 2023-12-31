@@ -41,7 +41,7 @@ const command: SlashCommand = {
           ephemeral: true,
         });
 
-      new keyModel({
+      await new keyModel({
         key,
       }).save();
 

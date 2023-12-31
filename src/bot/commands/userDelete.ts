@@ -35,7 +35,7 @@ const command: SlashCommand = {
           ephemeral: true,
         });
 
-      data.delete();
+      data.deleteOne();
 
       user?.send({
         embeds: [

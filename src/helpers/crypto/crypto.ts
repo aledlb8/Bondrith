@@ -1,5 +1,6 @@
-import { createHash, createCipheriv, createDecipheriv, randomBytes, createHmac } from 'crypto';
+import {createCipheriv, createDecipheriv, createHash, createHmac, randomBytes} from 'crypto';
 import helpers from '..';
+import {Cipher, Decipher} from "node:crypto";
 
 const algorithm = 'aes-256-ctr';
 
@@ -15,8 +16,8 @@ const algorithm = 'aes-256-ctr';
  */
 class CryptoUtils {
   private static getKeyFromEnv(): string {
-    const envEncryptKey = process.env.ENCRYPT_KEY;
-    if (!envEncryptKey || typeof envEncryptKey !== "string") {
+    const envEncryptKey: string = process.env.ENCRYPT_KEY;
+    if (!envEncryptKey) {
       throw new Error(
         "Invalid or missing ENCRYPT_KEY in environment variables."
       );
@@ -29,34 +30,36 @@ class CryptoUtils {
   }
 
   static encrypt(text: string): string {
-    const key = this.getKeyFromEnv();
-    const iv = randomBytes(16);
-    const cipher = createCipheriv(algorithm, key, iv);
+    const key: string = this.getKeyFromEnv();
+    const iv: Buffer = randomBytes(16);
+    const cipher: Cipher = createCipheriv(algorithm, key, iv);
 
-    const buffer = Buffer.concat([cipher.update(text), cipher.final()]);
-    const hash =
+    const buffer: Buffer = Buffer.concat([cipher.update(text), cipher.final()]);
+    const hash: string =
       iv.toString("hex") + `**${process.env.NAME}**` + buffer.toString("hex");
 
     return Buffer.from(hash).toString("base64");
   }
 
   static decrypt(text: string): string {
-    const key = this.getKeyFromEnv();
-    const buffer = Buffer.from(text, "base64").toString("ascii");
-    const hash = buffer.split(`**${process.env.NAME}**`);
+    const key: string = this.getKeyFromEnv();
+    const buffer: string = Buffer.from(text, "base64").toString("ascii");
+    const hash: string[] = buffer.split(`**${process.env.NAME}**`);
 
     const string = {
       iv: hash[0],
       content: hash[1],
     };
 
-    const decipher = createDecipheriv(
+    const decipher: Decipher = createDecipheriv(
       algorithm,
       key,
+      // @ts-ignore
       Buffer.from(string.iv, "hex")
     );
 
-    const concat = Buffer.concat([
+    const concat: Buffer = Buffer.concat([
+      // @ts-ignore
       decipher.update(Buffer.from(string.content, "hex")),
       decipher.final(),
     ]);
@@ -65,17 +68,15 @@ class CryptoUtils {
   }
 
   static genUserInfo() {
-    const id = randomBytes(8).toString("hex");
-    const encryptKey = this.getKeyFromEnv();
-    const token = createHmac("sha256", encryptKey).update(id).digest("hex");
+    const id: string = randomBytes(8).toString("hex");
+    const encryptKey: string = this.getKeyFromEnv();
+    const token: string = createHmac("sha256", encryptKey).update(id).digest("hex");
     return { id, token };
   }
 
-  static genKey() {
-    const seed = helpers.pkv.generateSeed();
-    const key = helpers.pkv.generatePKV(seed);
-
-    return key;
+  static genKey(): string {
+    const seed: string = helpers.pkv.generateSeed();
+    return helpers.pkv.generatePKV(seed);
   }
 }
 

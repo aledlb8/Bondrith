@@ -3,8 +3,8 @@ import mongoose, { Document, Schema } from 'mongoose';
 interface IUser extends Document {
     id: number;
     secret: string;
-    ip?: string;
-    hwid?: string;
+    ip: string | undefined;
+    hwid: string | undefined;
     discordId: string;
     createdAt: Date;
 }
@@ -36,4 +36,4 @@ const userSchema = new Schema<IUser>({
 const User = mongoose.model<IUser>('User', userSchema);
 
 export default User;
-export { IUser };
+export type { IUser };

@@ -85,6 +85,8 @@ class Utils {
                 ephemeral,
             });
         });
+
+        return;
     }
 
     static cancelAsk(fetchMessage: any, answer: boolean, interaction: CommandInteraction): boolean {

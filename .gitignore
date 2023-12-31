@@ -4,3 +4,4 @@ vsc.bat
 .env
 .gitattributes
 package-lock.json
+/dist

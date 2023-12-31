@@ -35,7 +35,7 @@ const command: SlashCommand = {
         embeds.push(helpers.utils.userListEmbed(license));
       }
 
-      await helpers.utils.paginationEmbed(
+      return await helpers.utils.paginationEmbed(
           interaction,
           ["◀️", "Back", "Next", "▶️"],
           embeds,

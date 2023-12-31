@@ -25,4 +25,4 @@ const keySchema = new Schema<IKey>({
 const Key = mongoose.model<IKey>('Key', keySchema);
 
 export default Key;
-export { IKey };
+export type { IKey };

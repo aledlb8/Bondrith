@@ -16,33 +16,33 @@ const command: SlashCommand = {
     .setName("keydelete")
     .setDescription("Delete a key")
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
-  execute: async (interaction: CommandInteraction) => {
+  execute: async function (interaction: CommandInteraction) {
     try {
       const modal = new ModalBuilder()
-        .setCustomId("deletekey")
-        .setTitle("Delete a key");
+          .setCustomId("deletekey")
+          .setTitle("Delete a key");
 
       const keyInput = new TextInputBuilder()
-        .setCustomId("keyInput")
-        .setLabel("Key to delete")
-        .setStyle(TextInputStyle.Short)
-        .setMaxLength(24)
-        .setMinLength(24)
-        .setPlaceholder("XXXX-XXXX-XXXX-XXXX-XXXX")
-        .setRequired(true);
+          .setCustomId("keyInput")
+          .setLabel("Key to delete")
+          .setStyle(TextInputStyle.Short)
+          .setMaxLength(24)
+          .setMinLength(24)
+          .setPlaceholder("XXXX-XXXX-XXXX-XXXX-XXXX")
+          .setRequired(true);
 
       const actionRow = new ActionRowBuilder().addComponents(keyInput);
 
       modal.addComponents(actionRow as any);
 
-      await interaction.showModal(modal);
+      return await interaction.showModal(modal);
     } catch (err) {
       return interaction.reply({
         embeds: [
           new EmbedBuilder()
-            .setColor("#FBC630")
-            .setTimestamp()
-            .setDescription("Internal server error"),
+              .setColor("#FBC630")
+              .setTimestamp()
+              .setDescription("Internal server error"),
         ],
         ephemeral: true,
       });

@@ -32,7 +32,7 @@ const command: SlashCommand = {
       const actionRow = new ActionRowBuilder().addComponents(keyInput);
       
       modal.addComponents(actionRow as any);
-      await interaction.showModal(modal);
+      return await interaction.showModal(modal);
     } catch (err) {
       return interaction.reply({
         embeds: [

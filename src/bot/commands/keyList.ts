@@ -34,7 +34,7 @@ const command: SlashCommand = {
         const key = data[i];
         embeds.push(helpers.utils.keyListEmbed(key));
       }
-      await helpers.utils.paginationEmbed(
+      return await helpers.utils.paginationEmbed(
           interaction,
           ["◀️", "Back", "Next", "▶️"],
           embeds,

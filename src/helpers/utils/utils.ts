@@ -151,9 +151,9 @@ class Utils {
 
         const components: ActionRowBuilder[] = [];
         let lastComponents = new ActionRowBuilder();
-        const emojis = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣", "🔟"];
+        const emojis: string[] = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣", "🔟"];
 
-        for (let i = 0; i < array.length; i++) {
+        for (let i: number = 0; i < array.length; i++) {
             const productName = array[i].name;
             const button = new ButtonBuilder()
                 .setEmoji(emojis[i])

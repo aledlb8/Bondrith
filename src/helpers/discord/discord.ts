@@ -3,15 +3,6 @@ import userModel, { IUser } from "../../models/user";
 import helpers from "..";
 import { DiscordUserInfo } from "../../../types";
 
-/**
- * DiscordService provides utility functions for retrieving user info from the Discord API.
- *
- * It contains methods to look up a user by their Discord ID or IP address.
- * The methods make requests to the Discord API and return a DiscordUserInfo object.
- *
- * The class handles errors and logging internally.
- * The methods are static so they can be called directly on the class.
- */
 class DiscordService {
   /**
    * Fetches a Discord user by their ID.

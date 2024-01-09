@@ -1,13 +1,14 @@
 import { Request, Response } from "express";
 import userModel from "../models/user";
 import helpers from "../helpers";
+import {DiscordUserInfo, VerificationResult} from "../../types";
 
 class userController {
   static async userLogin(req: Request, res: Response) {
-    const ip = req.ip.split(":").pop() || "0.0.0.0";
+    const ip: string = req.ip.split(":").pop() || "0.0.0.0";
 
     try {
-      const account = await helpers.discord.getInfoByIP(ip);
+      const account: DiscordUserInfo = await helpers.discord.getInfoByIP(ip);
       const identifier = account?.success ? account.data.username : ip;
 
       const { userId } = req.params;
@@ -19,7 +20,7 @@ class userController {
           .send({ success: false, message: "Invalid request" });
       }
 
-      const data = await helpers.verify.verifyId(userId);
+      const data: VerificationResult = await helpers.verify.verifyId(userId);
 
       if (!data?.success) {
         helpers.consola.debug(`${data.message}: ${identifier}`);
@@ -56,10 +57,10 @@ class userController {
   }
 
   static async userAccess(req: Request, res: Response) {
-    const ip = req.ip.split(":").pop() || "0.0.0.0";
+    const ip: string = req.ip.split(":").pop() || "0.0.0.0";
 
     try {
-      const account = await helpers.discord.getInfoByIP(ip);
+      const account: DiscordUserInfo = await helpers.discord.getInfoByIP(ip);
       const identifier = account?.success ? account.data.username : ip;
 
       const { userToken } = req.params;
@@ -72,7 +73,7 @@ class userController {
           .send({ success: false, message: "Invalid request" });
       }
 
-      const data = await helpers.verify.verifyToken(userToken);
+      const data: VerificationResult = await helpers.verify.verifyToken(userToken);
 
       if (!data?.success) {
         helpers.consola.debug(`${data.message}: ${identifier}`);

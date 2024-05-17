@@ -38,7 +38,7 @@ const command: SlashCommand = {
 
       const data = helpers.crypto.genUserInfo();
 
-      if (!data)
+      if (!data) {
         return interaction.reply({
           embeds: [
             new EmbedBuilder()
@@ -48,6 +48,7 @@ const command: SlashCommand = {
           ],
           ephemeral: true,
         });
+      }
 
       const userId: string = helpers.crypto.encrypt(data.id);
       const userToken: string = helpers.crypto.encrypt(data.token);

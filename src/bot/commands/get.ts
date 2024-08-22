@@ -50,8 +50,8 @@ const command: SlashCommand = {
           ephemeral: true,
         });
 
-      const userId = helpers.crypto.decrypt(secret.data?.userId);
-      const userToken = helpers.crypto.decrypt(secret.data?.userToken);
+      const userId: string = helpers.crypto.decrypt(secret.data?.userId);
+      const userToken: string = helpers.crypto.decrypt(secret.data?.userToken);
 
       return interaction.reply({
         embeds: [

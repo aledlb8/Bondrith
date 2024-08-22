@@ -16,11 +16,11 @@ const command: SlashCommand = {
     .setDescription("Redeem a key"),
   execute: async (interaction: CommandInteraction) => {
     try {
-      const modal = new ModalBuilder()
+      const modal: ModalBuilder = new ModalBuilder()
         .setCustomId("redeem")
         .setTitle("Redeem a key");
 
-      const keyInput = new TextInputBuilder()
+      const keyInput: TextInputBuilder = new TextInputBuilder()
         .setCustomId("keyInput")
         .setLabel("Key to redeem")
         .setStyle(TextInputStyle.Short)

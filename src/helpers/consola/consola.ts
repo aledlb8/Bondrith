@@ -11,28 +11,16 @@ enum TextColor {
   Grey = "\x1b[90m",
 }
 
-enum BackgroundColor {
-  Black = "\x1b[40m",
-  Red = "\x1b[41m",
-  Green = "\x1b[42m",
-  Yellow = "\x1b[43m",
-  Blue = "\x1b[44m",
-  Magenta = "\x1b[45m",
-  Cyan = "\x1b[46m",
-  White = "\x1b[47m",
-  Grey = "\x1b[100m",
-}
-
 /**
  * Gets the current time formatted as HH:MM:SS.
  *
  * @returns The current time as a formatted string.
  */
 function getCurrentTime(): string {
-  const now = new Date();
-  const hours = now.getHours().toString().padStart(2, "0");
-  const minutes = now.getMinutes().toString().padStart(2, "0");
-  const seconds = now.getSeconds().toString().padStart(2, "0");
+  const now: Date = new Date();
+  const hours: string = now.getHours().toString().padStart(2, "0");
+  const minutes: string = now.getMinutes().toString().padStart(2, "0");
+  const seconds: string = now.getSeconds().toString().padStart(2, "0");
   return `${TextColor.White}[${TextColor.Cyan}${hours}${TextColor.White}:${TextColor.Cyan}${minutes}${TextColor.White}:${TextColor.Cyan}${seconds}${TextColor.White}]${TextColor.Reset}`;
 }
 

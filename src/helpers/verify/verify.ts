@@ -19,7 +19,7 @@ class VerificationService {
 
       if (!decodedToken?.success || !decodedToken.data) {
         return {
-          success: false,
+          success: decodedToken?.success,
           message: decodedToken?.message || "Invalid token",
         };
       }
@@ -59,7 +59,7 @@ class VerificationService {
 
       if (result.success && result.userId === id) {
         return {
-          success: true,
+          success: result.success,
           message: "Valid id",
           discordData: result.discordData,
           userToken: result.userToken,
@@ -82,7 +82,7 @@ class VerificationService {
 
       if (result.success && result.userToken === token) {
         return {
-          success: true,
+          success: result.success,
           message: "Valid token",
           hwid: user.hwid,
           discordData: result.discordData,
@@ -101,7 +101,7 @@ class VerificationService {
     const keys = await keyModel.find();
 
     const foundKeyData = keys.find((data: IKey) => {
-      const decryptedKey = helpers.crypto.decrypt(data.key);
+      const decryptedKey: string = helpers.crypto.decrypt(data.key);
       return decryptedKey === key && helpers.pkv.verify(key);
     });
 

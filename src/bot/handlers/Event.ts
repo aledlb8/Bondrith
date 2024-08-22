@@ -5,15 +5,15 @@ import { BotEvent } from "../../../types";
 import helpers from "../../helpers";
 
 module.exports = (client: Client) => {
-  let eventsDir = join(__dirname, "../events");
+  let eventsDir: string = join(__dirname, "../events");
 
-  readdirSync(eventsDir).forEach((file) => {
+  readdirSync(eventsDir).forEach((file: string) => {
     if (!file.endsWith(".ts")) return;
     let event: BotEvent = require(`${eventsDir}/${file}`).default;
     if (!event.enable) return;
     event.once
-      ? client.once(event.name, (...args) => event.execute(...args))
-      : client.on(event.name, (...args) => event.execute(...args));
+      ? client.once(event.name, (...args: any[]) => event.execute(...args))
+      : client.on(event.name, (...args: any[]) => event.execute(...args));
     helpers.consola.success(`Loaded event ${event.name}`)
   });
 };

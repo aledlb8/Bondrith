@@ -15,7 +15,7 @@ const command: SlashCommand = {
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
   execute: async (interaction) => {
     try {
-      const data = helpers.crypto.genKey();
+      const data: string = helpers.crypto.genKey();
 
       if (!data)
         return interaction.reply({
@@ -28,7 +28,7 @@ const command: SlashCommand = {
           ephemeral: true,
         });
 
-      const key = helpers.crypto.encrypt(data);
+      const key: string = helpers.crypto.encrypt(data);
 
       if (!key)
         return interaction.reply({

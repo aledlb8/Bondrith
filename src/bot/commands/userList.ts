@@ -28,9 +28,9 @@ const command: SlashCommand = {
           ephemeral: true,
         });
 
-      let embeds = [];
+      let embeds: any[] = [];
 
-      for (let i = 0; i < data.length; i++) {
+      for (let i: number = 0; i < data.length; i++) {
         const license = data[i];
         embeds.push(helpers.utils.userListEmbed(license));
       }

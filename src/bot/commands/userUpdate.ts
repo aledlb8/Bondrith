@@ -33,11 +33,11 @@ const command: SlashCommand = {
                 });
             }
 
-            const modal = new ModalBuilder()
+            const modal: ModalBuilder = new ModalBuilder()
                 .setCustomId("discordupdate")
                 .setTitle("Update you account discord");
 
-            const keyInput = new TextInputBuilder()
+            const keyInput: TextInputBuilder = new TextInputBuilder()
                 .setCustomId("accountId")
                 .setLabel("Account ID")
                 .setStyle(TextInputStyle.Short)

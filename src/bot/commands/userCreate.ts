@@ -53,16 +53,17 @@ const command: SlashCommand = {
       const userId: string = helpers.crypto.encrypt(data.id);
       const userToken: string = helpers.crypto.encrypt(data.token);
 
-      if (!userId || !userToken)
+      if (!userId || !userToken) {
         return interaction.reply({
           embeds: [
             new EmbedBuilder()
-              .setColor("#FBC630")
-              .setTimestamp()
-              .setDescription("Internal server error"),
+                .setColor("#FBC630")
+                .setTimestamp()
+                .setDescription("Internal server error"),
           ],
           ephemeral: true,
         });
+      }
 
       const secret: string | undefined = helpers.jwt.generate(userId, userToken);
 
@@ -107,6 +108,8 @@ const command: SlashCommand = {
           ephemeral: true,
         });
       });
+
+      return;
     } catch (err) {
       return interaction.reply({
         embeds: [

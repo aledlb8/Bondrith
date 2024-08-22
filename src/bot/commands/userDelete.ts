@@ -1,7 +1,7 @@
 import {
   SlashCommandBuilder,
   EmbedBuilder,
-  PermissionFlagsBits,
+  PermissionFlagsBits, User,
 } from "discord.js";
 import { SlashCommand } from "../../../types";
 import userModel from "../../models/user";
@@ -19,7 +19,7 @@ const command: SlashCommand = {
     )
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
   execute: async (interaction) => {
-    const user = interaction.options.getUser("user");
+    const user: User | null = interaction.options.getUser("user");
 
     try {
       const data = await userModel.findOne({ discordId: user?.id });

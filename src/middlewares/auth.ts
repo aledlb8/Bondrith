@@ -1,18 +1,19 @@
-import { Request, Response, NextFunction } from "express";
+import {NextFunction, Request, Response} from "express";
 import helpers from "../helpers";
+import {DiscordUserInfo} from "../../types";
 
 class validation {
   static async requireAuth(req: Request, res: Response, next: NextFunction) {
     try {
-      const ip = req.ip.split(":").pop() || "0.0.0.0";
+      const ip: String = req.ip.split(":").pop() || "0.0.0.0";
 
       // @ts-ignore
-      const account = await helpers.discord.getInfoByIP(ip);
+      const account: DiscordUserInfo = await helpers.discord.getInfoByIP(ip);
       const identifier = account?.success ? account.data.username : ip;
 
       helpers.consola.debug(`Accessing website: ${identifier}`);
 
-      let token = req.headers.cookie;
+      let token: string | undefined = req.headers.cookie;
       if (token) token = token.replace(/^.{4}/, "");
 
       if (!token) {
@@ -27,16 +28,14 @@ class validation {
         return res.redirect("/");
       }
 
-      const userId = helpers.crypto.decrypt(data.data.userId);
-      const userToken = helpers.crypto.decrypt(data.data.userToken);
-
-      const user = {
-        userId,
-        userToken,
-      };
+      const userId: string = helpers.crypto.decrypt(data.data.userId);
+      const userToken: string = helpers.crypto.decrypt(data.data.userToken);
 
       // @ts-ignore
-      req.user = user
+      req.user = {
+        userId,
+        userToken,
+      }
       next();
     } catch (error) {
       helpers.consola.error(error)
@@ -45,15 +44,15 @@ class validation {
 
   static async validateAuth(req: Request, res: Response, next: NextFunction) {
     try {
-      const ip = req.ip.split(":").pop() || "0.0.0.0";
+      const ip: string = req.ip.split(":").pop() || "0.0.0.0";
 
-      const account = await helpers.discord.getInfoByIP(ip);
+      const account: DiscordUserInfo = await helpers.discord.getInfoByIP(ip);
       const identifier = account?.success ? account.data.username : ip;
 
       helpers.consola.debug(`Processing request: ${identifier}`);
 
       // Get the authorization token from the header
-      const authToken = req.headers["authorization"];
+      const authToken: string | undefined = req.headers["authorization"];
 
       // If no token is provided, return a 401 error
       if (!authToken) {

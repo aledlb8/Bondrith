@@ -18,7 +18,7 @@ const command: SlashCommand = {
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
   execute: async function (interaction: CommandInteraction) {
     try {
-      const modal = new ModalBuilder()
+      const modal: ModalBuilder = new ModalBuilder()
           .setCustomId("deletekey")
           .setTitle("Delete a key");
 

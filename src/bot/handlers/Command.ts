@@ -8,7 +8,7 @@ import helpers from "../../helpers";
 module.exports = (client: Client) => {
   const commands: SlashCommandBuilder[] = [];
 
-  let commandsDir = join(__dirname, "../commands");
+  let commandsDir: string = join(__dirname, "../commands");
 
   readdirSync(commandsDir).forEach((file) => {
     if (!file.endsWith(".ts")) return;
@@ -18,7 +18,7 @@ module.exports = (client: Client) => {
     client.commands.set(command.command.name, command);
   });
 
-  const rest = new REST({ version: "10" }).setToken(process.env.TOKEN);
+  const rest: REST = new REST({ version: "10" }).setToken(process.env.TOKEN);
 
 //   rest.put(Routes.applicationCommands(process.env.CLIENT_ID), { body: [] })
 // 	.then(() => helpers.consola.success('Successfully deleted all application commands.'))

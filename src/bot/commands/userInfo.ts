@@ -1,7 +1,7 @@
 import {
   SlashCommandBuilder,
   EmbedBuilder,
-  PermissionFlagsBits,
+  PermissionFlagsBits, User,
 } from "discord.js";
 import { SlashCommand } from "../../../types";
 import helpers from "../../helpers";
@@ -20,7 +20,7 @@ const command: SlashCommand = {
     )
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
   execute: async (interaction) => {
-    const user = interaction.options.getUser("user");
+    const user: User | null = interaction.options.getUser("user");
 
     try {
       const data = await userModel.findOne({ discordId: user?.id });
@@ -49,8 +49,8 @@ const command: SlashCommand = {
           ephemeral: true,
         });
 
-      const userId = helpers.crypto.decrypt(secret.data?.userId);
-      const userToken = helpers.crypto.decrypt(secret.data?.userToken);
+      const userId: string = helpers.crypto.decrypt(secret.data?.userId);
+      const userToken: string = helpers.crypto.decrypt(secret.data?.userToken);
 
       return interaction.reply({
         embeds: [

@@ -34,9 +34,9 @@ class PKV {
       b: number,
       c: number
     ): string {
-      const seedInt = parseInt(seed, 16);
-      const aMod = a % 25;
-      const bMod = b % 3;
+      const seedInt: number = parseInt(seed, 16);
+      const aMod: number = a % 25;
+      const bMod: number = b % 3;
 
       let subKey: number;
 
@@ -59,10 +59,10 @@ class PKV {
      * @returns A 4 character hex string representing the checksum
      */
     function getChecksumForSerial(serial: string): string {
-      let right = 0x00af; // 175
-      let left = 0x0056; // 101
+      let right: number = 0x00af; // 175
+      let left: number = 0x0056; // 101
 
-      for (let i = 0; i < serial.length; i++) {
+      for (let i: number = 0; i < serial.length; i++) {
         right += serial.charCodeAt(i);
         if (right > 0x00ff) {
           right -= 0x00ff;
@@ -81,22 +81,21 @@ class PKV {
       return key.match(/.{4}/g)!.join("-");
     }
 
-    const subKeys = [
+    const subKeys: string[] = [
       getSubKeyFromSeed(seed, 24, 3, 200),
       getSubKeyFromSeed(seed, 10, 0, 56),
       getSubKeyFromSeed(seed, 1, 2, 91),
       getSubKeyFromSeed(seed, 7, 1, 100),
     ];
 
-    const serial = seed + subKeys.join("");
-    const key = serial + getChecksumForSerial(serial);
+    const serial: string = seed + subKeys.join("");
+    const key: string = serial + getChecksumForSerial(serial);
 
     return formatKey(key);
   }
 
   static generateSeed(): string {
-    const seed = crypto.randomBytes(4).toString("hex").toUpperCase();
-    return seed;
+    return crypto.randomBytes(4).toString("hex").toUpperCase();
   }
 
   static verify(key: string): boolean {

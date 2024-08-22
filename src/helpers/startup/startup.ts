@@ -9,7 +9,7 @@ const startup = async () => {
 
     dotenv.config();
 
-    const requiredEnvVars = [
+    const requiredEnvVars: string[] = [
         "PORT",
         "HWID_RESET_PLACEHOLDER",
         "JWT_SECRET",
@@ -56,7 +56,7 @@ const startup = async () => {
     helpers.consola.info("Connecting to database");
 
     // connect to database
-    mongoose.connect(process.env.MONGO_URI as string);
+    await mongoose.connect(process.env.MONGO_URI as string);
 }
 
 export default startup;

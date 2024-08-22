@@ -1,5 +1,5 @@
 import { Interaction, EmbedBuilder } from "discord.js";
-import { BotEvent } from "../../../types";
+import {BotEvent, SlashCommand, VerificationResult} from "../../../types";
 import userModel from "../../models/user";
 import keyModel from "../../models/key";
 import helpers from "../../helpers";
@@ -47,7 +47,7 @@ const event: BotEvent = {
     } else if (interaction.isModalSubmit()) {
       await handleModalSubmit(interaction);
     } else if (interaction.isContextMenuCommand()) {
-      const context = interaction.client.commands.get(interaction.commandName);
+      const context: SlashCommand | undefined = interaction.client.commands.get(interaction.commandName);
       if (!context || !context.enable) {
         return interaction.reply(
           "This feature is not available at the moment, please try again later."
@@ -114,7 +114,7 @@ async function handleKeyDeletion(interaction: any) {
     const keys = await keyModel.find();
 
     for (const data of keys) {
-      const decryptedKey = helpers.crypto.decrypt(data.key);
+      const decryptedKey: string = helpers.crypto.decrypt(data.key);
       if (decryptedKey !== key) {
         return await interaction.reply({
           embeds: [
@@ -170,7 +170,7 @@ async function handleKeyRedemption(interaction: any) {
     const keys = await keyModel.find();
 
     for (const data of keys) {
-      const decryptedKey = helpers.crypto.decrypt(data.key);
+      const decryptedKey: string = helpers.crypto.decrypt(data.key);
       if (decryptedKey !== key) {
         return await interaction.reply({
           embeds: [
@@ -222,8 +222,8 @@ async function handleKeyRedemption(interaction: any) {
         });
       }
 
-      const userId = helpers.crypto.encrypt(userInfo.id);
-      const userToken = helpers.crypto.encrypt(userInfo.token);
+      const userId: string = helpers.crypto.encrypt(userInfo.id);
+      const userToken: string = helpers.crypto.encrypt(userInfo.token);
 
       if (!userId || !userToken) {
         return await interaction.reply({
@@ -237,12 +237,12 @@ async function handleKeyRedemption(interaction: any) {
         });
       }
 
-      const secret = helpers.jwt.generate(userId, userToken);
+      const secret: string | undefined = helpers.jwt.generate(userId, userToken);
 
       let nextId: number;
 
       try {
-        const count = await userModel.countDocuments({});
+        const count: number = await userModel.countDocuments({});
         nextId = count + 1;
       } catch (err) {
         helpers.consola.error(err);
@@ -327,7 +327,7 @@ async function handleDiscordUpdate(interaction: any) {
   const id = interaction.fields.getTextInputValue("accountId");
 
   try {
-    const data = await helpers.verify.verifyId(id);
+    const data: VerificationResult = await helpers.verify.verifyId(id);
 
     if (!data?.success) {
       return await interaction.reply({

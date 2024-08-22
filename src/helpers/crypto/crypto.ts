@@ -2,7 +2,7 @@ import {createCipheriv, createDecipheriv, createHash, createHmac, randomBytes} f
 import helpers from '..';
 import {Cipher, Decipher} from "node:crypto";
 
-const algorithm = 'aes-256-ctr';
+const algorithm = "aes-256-ctr";
 
 /**
  * CryptoUtils provides encryption, decryption and key generation utilities.

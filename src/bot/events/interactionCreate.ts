@@ -154,7 +154,7 @@ async function handleKeyDeletion(interaction: any) {
         new EmbedBuilder()
           .setColor("#FBC630")
           .setTimestamp()
-          .setDescription("Internal server error"),
+          .setDescription("Internal server error while deleting key"),
       ],
       ephemeral: true,
     });
@@ -216,7 +216,7 @@ async function handleKeyRedemption(interaction: any) {
             new EmbedBuilder()
               .setColor("#FBC630")
               .setTimestamp()
-              .setDescription("Internal server error"),
+              .setDescription("Internal server error while generating user info"),
           ],
           ephemeral: true,
         });
@@ -231,7 +231,7 @@ async function handleKeyRedemption(interaction: any) {
             new EmbedBuilder()
               .setColor("#FBC630")
               .setTimestamp()
-              .setDescription("Internal server error"),
+              .setDescription("Internal server error while encrypting user info"),
           ],
           ephemeral: true,
         });
@@ -251,7 +251,7 @@ async function handleKeyRedemption(interaction: any) {
             new EmbedBuilder()
               .setColor("#FBC630")
               .setTimestamp()
-              .setDescription("Internal server error"),
+              .setDescription("Internal server error while counting documents"),
           ],
           ephemeral: true,
         });
@@ -294,7 +294,7 @@ async function handleKeyRedemption(interaction: any) {
             new EmbedBuilder()
               .setColor("#FBC630")
               .setTimestamp()
-              .setDescription("Internal server error"),
+              .setDescription("Internal server error while creating user"),
           ],
           ephemeral: true,
         });
@@ -316,7 +316,7 @@ async function handleKeyRedemption(interaction: any) {
         new EmbedBuilder()
           .setColor("#FBC630")
           .setTimestamp()
-          .setDescription("Internal server error"),
+          .setDescription("Internal server error while redeeming key"),
       ],
       ephemeral: true,
     });
@@ -363,7 +363,7 @@ async function handleDiscordUpdate(interaction: any) {
           new EmbedBuilder()
             .setColor("#FBC630")
             .setTimestamp()
-            .setDescription("Internal server error"),
+            .setDescription("Internal server error while finding user"),
         ],
         ephemeral: true,
       });
@@ -387,7 +387,7 @@ async function handleDiscordUpdate(interaction: any) {
         new EmbedBuilder()
           .setColor("#FBC630")
           .setTimestamp()
-          .setDescription("Internal server error"),
+          .setDescription("Internal server error while updating discord account"),
       ],
       ephemeral: true,
     });

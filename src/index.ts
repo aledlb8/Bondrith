@@ -18,11 +18,6 @@ helpers.startup()
     // initialize
     const app = express();
 
-    const db = mongoose.connection;
-
-    db.on("error", (err) => helpers.consola.error(`Database error: ${err}`));
-    db.once("open", () => helpers.consola.success("Database connected"));
-
     // set up routes
     app.use("/api/user", userRoute);
 
@@ -42,7 +37,7 @@ helpers.startup()
       helpers.consola.success("Server started");
     });
 
-    helpers.consola.info("Starting bot");
+    helpers.consola.info("Starting bot...");
     require("./bot");
 
     process.on("uncaughtException", (err) => {

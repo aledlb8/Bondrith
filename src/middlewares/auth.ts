@@ -69,7 +69,7 @@ class validation {
       }
 
       // If the token is valid, proceed to the next middleware or route handler
-      next();
+      return next();
     } catch (error) {
       helpers.consola.error(error)
     }

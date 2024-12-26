@@ -1,6 +1,6 @@
-import {createCipheriv, createDecipheriv, createHash, createHmac, randomBytes} from 'crypto';
+import { createCipheriv, createDecipheriv, createHash, createHmac, randomBytes } from 'crypto';
 import helpers from '..';
-import {Cipher, Decipher} from "node:crypto";
+import { Cipher, Decipher } from "node:crypto";
 
 const algorithm = "aes-256-ctr";
 
@@ -77,6 +77,18 @@ class CryptoUtils {
   static genKey(): string {
     const seed: string = helpers.pkv.generateSeed();
     return helpers.pkv.generatePKV(seed);
+  }
+
+  static userId(data: any) {
+    const secret = helpers.jwt.verify(data);
+    if (!secret?.data) return;
+    return helpers.crypto.decrypt(secret?.data?.userId);
+  }
+
+  static userToken(data: any) {
+    const secret = helpers.jwt.verify(data);
+    if (!secret?.data) return;
+    return helpers.crypto.decrypt(secret?.data?.userToken);
   }
 }
 

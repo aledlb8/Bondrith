@@ -1,14 +1,5 @@
 import * as jwt from 'jsonwebtoken';
 
-/**
- * JWT provides methods for generating and verifying JSON Web Tokens.
- *
- * generate() signs a JWT payload containing the provided userId and userToken,
- * using the secret from process.env.JWT_SECRET.
- *
- * verify() verifies a JWT using process.env.JWT_SECRET as the secret key.
- * It returns the decoded userId and userToken if valid, or an error if invalid.
- */
 class JWT {
   /**
    * Generates a JSON Web Token (JWT) containing the provided userId and userToken.

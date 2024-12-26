@@ -44,7 +44,7 @@ const command: SlashCommand = {
             new EmbedBuilder()
               .setColor("#FBC630")
               .setTimestamp()
-              .setDescription("Internal server error"),
+              .setDescription("Internal server error while generating user info"),
           ],
           ephemeral: true,
         });
@@ -57,9 +57,9 @@ const command: SlashCommand = {
         return interaction.reply({
           embeds: [
             new EmbedBuilder()
-                .setColor("#FBC630")
-                .setTimestamp()
-                .setDescription("Internal server error"),
+              .setColor("#FBC630")
+              .setTimestamp()
+              .setDescription("Internal server error while encrypting user info"),
           ],
           ephemeral: true,
         });
@@ -69,54 +69,57 @@ const command: SlashCommand = {
 
       let nextId: number;
 
-      userModel.countDocuments({}, function (err: any, count: any) {
-        if (err) {
+      userModel.countDocuments({})
+        .then((count: number) => {
+          const nextId = count + 1;
+
+          new userModel({
+            id: nextId,
+            secret,
+            discordId: user?.id,
+          }).save()
+
+          user?.send({
+            embeds: [
+              new EmbedBuilder()
+                .setColor("#FBC630")
+                .setTimestamp()
+                .setDescription(`Id: \`${data.id}\`\nToken: \`${data.token}\``),
+            ],
+          });
+
           return interaction.reply({
             embeds: [
               new EmbedBuilder()
                 .setColor("#FBC630")
                 .setTimestamp()
-                .setDescription("Internal server error"),
+                .setDescription(`Id: \`${data.id}\`\nToken: \`${data.token}\``),
             ],
             ephemeral: true,
           });
-        }
-
-        nextId = count + 1;
-
-        new userModel({
-          id: nextId,
-          secret,
-          discordId: user?.id,
-        }).save();
-
-        user?.send({
-          embeds: [
-            new EmbedBuilder()
-              .setColor("#FBC630")
-              .setTimestamp()
-              .setDescription(`Id: \`${data.id}\`\nToken: \`${data.token}\``),
-          ],
+        })
+        .catch((err: any) => {
+          console.error(err);
+          return interaction.reply({
+            embeds: [
+              new EmbedBuilder()
+                .setColor("#FBC630")
+                .setTimestamp()
+                .setDescription("Internal server error while counting documents"),
+            ],
+            ephemeral: true,
+          });
         });
-        return interaction.reply({
-          embeds: [
-            new EmbedBuilder()
-              .setColor("#FBC630")
-              .setTimestamp()
-              .setDescription(`Id: \`${data.id}\`\nToken: \`${data.token}\``),
-          ],
-          ephemeral: true,
-        });
-      });
 
       return;
     } catch (err) {
+      console.log(err)
       return interaction.reply({
         embeds: [
           new EmbedBuilder()
             .setColor("#FBC630")
             .setTimestamp()
-            .setDescription("Internal server error"),
+            .setDescription("Internal server error while creating user"),
         ],
         ephemeral: true,
       });

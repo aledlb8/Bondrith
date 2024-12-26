@@ -4,8 +4,8 @@ import {
   PermissionFlagsBits,
 } from "discord.js";
 import { SlashCommand } from "../../../types";
-import helpers from "../../helpers";
 import keyModel from "../../models/key";
+import helpers from "../../helpers";
 
 const command: SlashCommand = {
   enable: true,
@@ -30,33 +30,32 @@ const command: SlashCommand = {
 
       let embeds: any[] = [];
 
-      for (let i: number = 0; i < data.length; i++) {
-        const key = data[i];
-        embeds.push(helpers.utils.keyListEmbed(key));
-      }
-      return await helpers.utils.paginationEmbed(
-          interaction,
-          ["◀️", "Back", "Next", "▶️"],
-          embeds,
-          "60s",
-          false
-      );
+      // ● **Key Information**
+      // > Key: ${helpers.crypto.decrypt(key.key) ?? 'N/A'}
+      // > Used: ${key.used ?? 'N/A'}
+      // > Created at: ${key.createdAt ? `<t:${Math.floor(key.createdAt / 1000)}:R>` : 'N/A'}
+      
+      const embedDetails = data
+        .map((info) => {
+          return [
+            `Key: \`${helpers.crypto.decrypt(info.key) ?? 'N/A'}\``,
+            `Used: \`${info.used ?? 'N/A'}\``,
+            //@ts-ignore
+            `Created: ${info.createdAt ? `<t:${Math.floor(info.createdAt / 1000)}:R>` : 'N/A'}`,
+          ].join("\n");
+        })
+        .join("\n\n");
 
-      // const embedDetails = data
-      //   .map((info) => {
-      //     return [
-      //       `Key: \`${helpers.crypto.decrypt(info.key)}\``,
-      //       `Used: \`${info.used}\``,
-      //       `CreatedAt: \`${info.createdAt}\``,
-      //     ].join("\n");
-      //   })
-      //   .join("\n\n");
+      // for (let i: number = 0; i < data.length; i++) {
+      //   const key = data[i];
+      //   embeds.push(data[i]);
+      // }
 
-      // const embed = new EmbedBuilder()
-      //   .setTitle("Keys")
-      //   .setDescription(embedDetails)
-      //   .setColor("#FBC630");
-      // interaction.reply({ embeds: [embed], ephemeral: true });
+      const embed = new EmbedBuilder()
+        .setTitle("Keys")
+        .setDescription(embedDetails)
+        .setColor("#FBC630");
+      return interaction.reply({ embeds: [embed], ephemeral: true });
     } catch (err) {
       console.log(err)
       return interaction.reply({
@@ -64,7 +63,7 @@ const command: SlashCommand = {
           new EmbedBuilder()
             .setColor("#FBC630")
             .setTimestamp()
-            .setDescription("Internal server error"),
+            .setDescription("Internal server error while getting keys"),
         ],
         ephemeral: true,
       });

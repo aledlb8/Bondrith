@@ -23,7 +23,7 @@ const command: SlashCommand = {
             new EmbedBuilder()
               .setColor("#FBC630")
               .setTimestamp()
-              .setDescription("Internal server error"),
+              .setDescription("Internal server error while generating key"),
           ],
           ephemeral: true,
         });
@@ -36,7 +36,7 @@ const command: SlashCommand = {
             new EmbedBuilder()
               .setColor("#FBC630")
               .setTimestamp()
-              .setDescription("Internal server error"),
+              .setDescription("Internal server error while encrypting key"),
           ],
           ephemeral: true,
         });
@@ -60,7 +60,7 @@ const command: SlashCommand = {
           new EmbedBuilder()
             .setColor("#FBC630")
             .setTimestamp()
-            .setDescription("Internal server error"),
+            .setDescription("Internal server error while creating key"),
         ],
         ephemeral: true,
       });

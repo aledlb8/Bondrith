@@ -1,12 +1,3 @@
-/**
- * PKV class provides methods for generating and verifying product keys.
- *
- * generatePKV() takes a seed and uses crypto algorithms to generate a formatted product key string.
- * generateSeed() generates a random hex seed.
- * verify() checks if a key is validly formatted.
- *
- * The class is exported for use in other modules.
- */
 import crypto from "crypto";
 
 class PKV {

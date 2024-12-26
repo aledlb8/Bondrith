@@ -53,10 +53,12 @@ const startup = async () => {
         helpers.consola.warn("AUTH_TOKEN is not defined or not of valid type or length");
     }
 
-    helpers.consola.info("Connecting to database");
+    helpers.consola.info("Connecting to database...");
 
     // connect to database
-    await mongoose.connect(process.env.MONGO_URI as string);
+    await mongoose.connect(process.env.MONGO_URI as string)
+        .then(() => helpers.consola.success("Database connected"))
+        .catch((err) => helpers.consola.error(`Database error: ${err}`));
 }
 
 export default startup;

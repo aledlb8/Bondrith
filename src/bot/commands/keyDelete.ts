@@ -42,7 +42,7 @@ const command: SlashCommand = {
           new EmbedBuilder()
               .setColor("#FBC630")
               .setTimestamp()
-              .setDescription("Internal server error"),
+              .setDescription("Internal server error while generating modal"),
         ],
         ephemeral: true,
       });

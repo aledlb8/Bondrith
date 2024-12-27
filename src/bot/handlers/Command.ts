@@ -29,7 +29,7 @@ module.exports = (client: Client) => {
       body: commands.map((command) => command.toJSON()),
     })
     .then((data: any) => {
-      helpers.consola.success(`Loaded ${data.length} commands(s)`)
+      helpers.consola.success(`Loaded ${data.length} command(s)`)
     })
     .catch((e: any) => {
       helpers.consola.error(e);

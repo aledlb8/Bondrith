@@ -14,6 +14,7 @@ module.exports = (client: Client) => {
     event.once
       ? client.once(event.name, (...args: any[]) => event.execute(...args))
       : client.on(event.name, (...args: any[]) => event.execute(...args));
-    helpers.consola.success(`Loaded event ${event.name}`)
   });
+
+  helpers.consola.success(`Loaded ${readdirSync(eventsDir).length} event(s)`);
 };

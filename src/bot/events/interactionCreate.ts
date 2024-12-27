@@ -278,6 +278,14 @@ async function handleKeyRedemption(interaction: any) {
           ],
         });
 
+        const guild = interaction.guild;
+        const role = guild.roles.cache.get(process.env.ROLE_ID);
+
+        if (!role) helpers.consola.error("Invalid role ID");
+
+        const member = guild.members.cache.get(user.id);
+        member.roles.add(role);
+
         return await interaction.reply({
           embeds: [
             new EmbedBuilder()

@@ -81,13 +81,13 @@ class CryptoUtils {
 
   static userId(data: any) {
     const secret = helpers.jwt.verify(data);
-    if (!secret?.data) return;
+    if (!secret?.success || !secret?.data) return;
     return helpers.crypto.decrypt(secret?.data?.userId);
   }
 
   static userToken(data: any) {
     const secret = helpers.jwt.verify(data);
-    if (!secret?.data) return;
+    if (!secret?.success || !secret?.data) return;
     return helpers.crypto.decrypt(secret?.data?.userToken);
   }
 }

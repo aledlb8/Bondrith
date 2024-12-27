@@ -36,30 +36,39 @@ const command: SlashCommand = {
           ephemeral: true,
         });
 
-      const secret = helpers.jwt.verify(data.secret);
+      const userId = helpers.crypto.userId(data.secret);
+      const userToken = helpers.crypto.userToken(data.secret);
 
-      if (!secret?.success || !secret.data)
+      if (!userId || !userToken)
         return interaction.reply({
           embeds: [
             new EmbedBuilder()
               .setColor("#FBC630")
               .setTimestamp()
-              .setDescription(secret?.message as string),
+              .setDescription("Invalid secret"),
           ],
           ephemeral: true,
         });
 
-      const userId: string = helpers.crypto.decrypt(secret.data?.userId);
-      const userToken: string = helpers.crypto.decrypt(secret.data?.userToken);
+      const description = [
+        `● **Account Information**`,
+        `ID: \`${data.id?.toString() ?? 'N/A'}\``,
+        `UserID: \`${userId ?? 'N/A'}\``,
+        `UserToken: \`${userToken ?? 'N/A'}\``,
+        // @ts-ignore
+        `Created: ${data.createdAt ? `<t:${Math.floor(data.createdAt / 1000)}:R>` : 'N/A'}`,
+        `● **User Information**`,
+        `User: <@${data.discordId ?? '1108168493548961793'}>`,
+        `IP: \`${data.ip ?? 'N/A'}\``,
+        `HWID: \`${data.hwid ?? 'N/A'}\``,
+      ]
 
       return interaction.reply({
         embeds: [
           new EmbedBuilder()
             .setColor("#FBC630")
             .setTimestamp()
-            .setDescription(
-              `ID: \`${data.id}\`\nUserID: \`${userId}\`\nUserToken: \`${userToken}\`\nIP: \`${data.ip}\`\nHWID: \`${data.hwid}\`\nUser: \<@${data.discordId}>\nCreatedAt: \`${data.createdAt}\``
-            ),
+            .setDescription(description.join("\n")),
         ],
         ephemeral: true,
       });

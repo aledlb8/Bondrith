@@ -41,6 +41,7 @@ helpers.startup()
     require("./bot");
 
     process.on("uncaughtException", (err) => {
+      console.log(err);
       helpers.consola.error(err);
     });
   })

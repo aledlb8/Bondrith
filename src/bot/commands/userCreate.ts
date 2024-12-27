@@ -19,8 +19,20 @@ const command: SlashCommand = {
         .setRequired(true)
     )
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
-  execute: async (interaction) => {
-    const user: User | null = interaction.options.getUser("user");
+  execute: async (interaction: any) => {
+    const user: User = interaction.options.getUser("user");
+
+    if (user?.bot) {
+      return interaction.reply({
+        embeds: [
+          new EmbedBuilder()
+            .setColor("#FBC630")
+            .setTimestamp()
+            .setDescription("Bots can't own a copy"),
+        ],
+        ephemeral: true,
+      });
+    }
 
     try {
       const userCheck = await userModel.findOne({ discordId: user?.id });
@@ -71,7 +83,7 @@ const command: SlashCommand = {
 
       userModel.countDocuments({})
         .then((count: number) => {
-          const nextId = count + 1;
+          nextId = count + 1;
 
           new userModel({
             id: nextId,
@@ -88,6 +100,14 @@ const command: SlashCommand = {
             ],
           });
 
+          const guild = interaction.guild;
+          const role = guild.roles.cache.get(process.env.ROLE_ID);
+
+          if (!role) helpers.consola.error("Invalid role ID");
+
+          const member = guild.members.cache.get(user.id);
+          member.roles.add(role);
+
           return interaction.reply({
             embeds: [
               new EmbedBuilder()
@@ -99,7 +119,6 @@ const command: SlashCommand = {
           });
         })
         .catch((err: any) => {
-          console.error(err);
           return interaction.reply({
             embeds: [
               new EmbedBuilder()
@@ -113,7 +132,6 @@ const command: SlashCommand = {
 
       return;
     } catch (err) {
-      console.log(err)
       return interaction.reply({
         embeds: [
           new EmbedBuilder()

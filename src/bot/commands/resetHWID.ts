@@ -43,6 +43,7 @@ const command: SlashCommand = {
               .setTimestamp()
               .setDescription("HWID is already reset"),
           ],
+          ephemeral: true,
         });
 
       userCheck.hwid = process.env.HWID_RESET_PLACEHOLDER;

@@ -37,6 +37,7 @@ declare global {
       CLIENT_ID: string;
       GUILD_ID: string;
       WEBHOOK: string;
+      ROLD_ID: string;
       MONGO_URI: string;
     }
   }

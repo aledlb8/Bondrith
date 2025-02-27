@@ -3,7 +3,7 @@
   "version": "0.1",
   "description": "Modern high-security auth system",
   "scripts": {
-    "build": "tsc",
+    "build": "ts-node src/index.ts",
     "start": "node dist/index.js",
     "dev": "ts-node src/index.ts",
     "test": "tsc -w"

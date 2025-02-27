@@ -1,5 +1,5 @@
 import { Interaction, EmbedBuilder } from "discord.js";
-import {BotEvent, SlashCommand, VerificationResult} from "../../../types";
+import { BotEvent, SlashCommand, VerificationResult } from "../../../types";
 import userModel from "../../models/user";
 import keyModel from "../../models/key";
 import helpers from "../../helpers";
@@ -242,8 +242,73 @@ async function handleKeyRedemption(interaction: any) {
       let nextId: number;
 
       try {
-        const count: number = await userModel.countDocuments({});
-        nextId = count + 1;
+        userModel.countDocuments({})
+          .then(async(count: number) => {
+            nextId = count + 1;
+
+            try {
+              data.used = true;
+              data.save();
+
+              await new userModel({
+                id: nextId,
+                secret,
+                discordId: user.id,
+              }).save();
+
+              await user?.send({
+                embeds: [
+                  new EmbedBuilder()
+                    .setColor("#FBC630")
+                    .setTimestamp()
+                    .setDescription(
+                      `Id: \`${userInfo.id}\`\nToken: \`${userInfo.token}\``
+                    ),
+                ],
+              });
+
+              const guild = interaction.guild;
+              const role = guild.roles.cache.get(process.env.ROLE_ID);
+
+              if (!role) helpers.consola.error("Invalid role ID");
+
+              const member = guild.members.cache.get(user.id);
+              member.roles.add(role);
+
+              return await interaction.reply({
+                embeds: [
+                  new EmbedBuilder()
+                    .setColor("#FBC630")
+                    .setTimestamp()
+                    .setDescription("Key redeemed, check DMs"),
+                ],
+                ephemeral: true,
+              });
+            } catch (err) {
+              helpers.consola.error(err);
+              return await interaction.reply({
+                embeds: [
+                  new EmbedBuilder()
+                    .setColor("#FBC630")
+                    .setTimestamp()
+                    .setDescription("Internal server error while creating user"),
+                ],
+                ephemeral: true,
+              });
+            }
+          })
+          .catch(async (err: Error) => {
+            helpers.consola.error(err);
+            return await interaction.reply({
+              embeds: [
+                new EmbedBuilder()
+                  .setColor("#FBC630")
+                  .setTimestamp()
+                  .setDescription("Internal server error while counting documents"),
+              ],
+              ephemeral: true,
+            });
+          });
       } catch (err) {
         helpers.consola.error(err);
         return await interaction.reply({
@@ -252,57 +317,6 @@ async function handleKeyRedemption(interaction: any) {
               .setColor("#FBC630")
               .setTimestamp()
               .setDescription("Internal server error while counting documents"),
-          ],
-          ephemeral: true,
-        });
-      }
-
-      try {
-        data.used = true;
-        data.save();
-
-        await new userModel({
-          id: nextId,
-          secret,
-          discordId: user.id,
-        }).save();
-
-        await user?.send({
-          embeds: [
-            new EmbedBuilder()
-              .setColor("#FBC630")
-              .setTimestamp()
-              .setDescription(
-                `Id: \`${userInfo.id}\`\nToken: \`${userInfo.token}\``
-              ),
-          ],
-        });
-
-        const guild = interaction.guild;
-        const role = guild.roles.cache.get(process.env.ROLE_ID);
-
-        if (!role) helpers.consola.error("Invalid role ID");
-
-        const member = guild.members.cache.get(user.id);
-        member.roles.add(role);
-
-        return await interaction.reply({
-          embeds: [
-            new EmbedBuilder()
-              .setColor("#FBC630")
-              .setTimestamp()
-              .setDescription("Key redeemed, check DMs"),
-          ],
-          ephemeral: true,
-        });
-      } catch (err) {
-        helpers.consola.error(err);
-        return await interaction.reply({
-          embeds: [
-            new EmbedBuilder()
-              .setColor("#FBC630")
-              .setTimestamp()
-              .setDescription("Internal server error while creating user"),
           ],
           ephemeral: true,
         });

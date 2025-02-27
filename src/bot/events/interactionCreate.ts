@@ -322,15 +322,6 @@ async function handleKeyRedemption(interaction: any) {
         });
       }
     }
-    return await interaction.reply({
-      embeds: [
-        new EmbedBuilder()
-          .setColor("#FBC630")
-          .setTimestamp()
-          .setDescription("Key not found"),
-      ],
-      ephemeral: true,
-    });
   } catch (err) {
     helpers.consola.error(err);
     await interaction.reply({

@@ -1,11 +1,9 @@
 // import packages
 import cookieParser from "cookie-parser";
 import compression from "compression";
-import mongoose from "mongoose";
 import express from "express";
 import helmet from "helmet";
 import cors from "cors";
-import path from "path";
 
 // import utilities
 import helpers from "./helpers";

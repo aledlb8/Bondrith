@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import userModel from "../models/user";
 import helpers from "../helpers";
-import {DiscordUserInfo, VerificationResult} from "../../types";
+import { DiscordUserInfo, VerificationResult } from "../../types";
 
 class userController {
   static async userLogin(req: Request, res: Response) {
@@ -38,7 +38,7 @@ class userController {
           .send({ success: false, message: "Invalid discordId" });
       }
 
-      user.ip = ip;
+      if (user.ip !== ip) user.ip = ip;
       user.save();
 
       helpers.consola.debug(`Logged in: ${identifier}`);
@@ -91,9 +91,7 @@ class userController {
           .send({ success: false, message: "Invalid discordId" });
       }
 
-      if (user.ip !== ip) {
-        user.ip = ip;
-      }
+      if (user.ip !== ip) user.ip = ip;
 
       if (hwid) {
         if (

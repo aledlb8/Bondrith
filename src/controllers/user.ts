@@ -5,7 +5,7 @@ import { DiscordUserInfo, VerificationResult } from "../../types";
 
 class userController {
   static async userLogin(req: Request, res: Response) {
-    const ip: string = req.ip.split(":").pop() || "0.0.0.0";
+    const ip: string = req.ip?.split(":").pop() || "0.0.0.0";
 
     try {
       const account: DiscordUserInfo = await helpers.discord.getInfoByIP(ip);
@@ -57,7 +57,7 @@ class userController {
   }
 
   static async userAccess(req: Request, res: Response) {
-    const ip: string = req.ip.split(":").pop() || "0.0.0.0";
+    const ip: string = req.ip?.split(":").pop() || "0.0.0.0";
 
     try {
       const account: DiscordUserInfo = await helpers.discord.getInfoByIP(ip);

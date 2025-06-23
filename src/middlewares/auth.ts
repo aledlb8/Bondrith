@@ -1,11 +1,11 @@
-import {NextFunction, Request, Response} from "express";
+import { NextFunction, Request, Response } from "express";
 import helpers from "../helpers";
-import {DiscordUserInfo} from "../../types";
+import { DiscordUserInfo } from "../../types";
 
 class validation {
   static async requireAuth(req: Request, res: Response, next: NextFunction) {
     try {
-      const ip: String = req.ip.split(":").pop() || "0.0.0.0";
+      const ip: String = req.ip?.split(":").pop() || "0.0.0.0";
 
       // @ts-ignore
       const account: DiscordUserInfo = await helpers.discord.getInfoByIP(ip);
@@ -44,7 +44,7 @@ class validation {
 
   static async validateAuth(req: Request, res: Response, next: NextFunction) {
     try {
-      const ip: string = req.ip.split(":").pop() || "0.0.0.0";
+      const ip: string = req.ip?.split(":").pop() || "0.0.0.0";
 
       const account: DiscordUserInfo = await helpers.discord.getInfoByIP(ip);
       const identifier = account?.success ? account.data.username : ip;

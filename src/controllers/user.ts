@@ -73,7 +73,8 @@ class userController {
           .send({ success: false, message: "Invalid request" });
       }
 
-      const data: VerificationResult = await helpers.verify.verifyToken(userToken);
+      const data: VerificationResult =
+        await helpers.verify.verifyToken(userToken);
 
       if (!data?.success) {
         helpers.consola.debug(`${data.message}: ${identifier}`);

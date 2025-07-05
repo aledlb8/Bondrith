@@ -1,7 +1,7 @@
 import userModel, { IUser } from "../../models/user";
 import keyModel, { IKey } from "../../models/key";
 import helpers from "..";
-import {DiscordUserInfo, VerificationResult} from "../../../types";
+import { DiscordUserInfo, VerificationResult } from "../../../types";
 
 class VerificationService {
   /**
@@ -25,11 +25,12 @@ class VerificationService {
       }
 
       const userId: string = helpers.crypto.decrypt(decodedToken.data.userId);
-      const userToken: string = helpers.crypto.decrypt(decodedToken.data.userToken);
-
-      const discordDataResult: DiscordUserInfo = await helpers.discord.getInfoByID(
-        user.discordId
+      const userToken: string = helpers.crypto.decrypt(
+        decodedToken.data.userToken,
       );
+
+      const discordDataResult: DiscordUserInfo =
+        await helpers.discord.getInfoByID(user.discordId);
 
       if (!discordDataResult?.data) {
         return { success: false, message: "Invalid discordId" };

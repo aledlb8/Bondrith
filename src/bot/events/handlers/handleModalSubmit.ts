@@ -4,7 +4,7 @@ import handleKeyRedemption from "./modal/handleKeyRedemption";
 import handleDiscordUpdate from "./modal/handleDiscordUpdate";
 
 export default async function handleModalSubmit(
-  interaction: ModalSubmitInteraction
+  interaction: ModalSubmitInteraction,
 ) {
   const customId = interaction.customId;
   switch (customId) {

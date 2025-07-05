@@ -1,6 +1,15 @@
-import { CommandInteraction, EmbedBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder } from "discord.js";
+import {
+  CommandInteraction,
+  EmbedBuilder,
+  ModalBuilder,
+  TextInputBuilder,
+  TextInputStyle,
+  ActionRowBuilder,
+} from "discord.js";
 
-export default async function showDeleteKeyModal(interaction: CommandInteraction) {
+export default async function showDeleteKeyModal(
+  interaction: CommandInteraction,
+) {
   try {
     const modal: ModalBuilder = new ModalBuilder()
       .setCustomId("deletekey")

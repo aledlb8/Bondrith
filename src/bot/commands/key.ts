@@ -1,4 +1,8 @@
-import { SlashCommandBuilder, PermissionFlagsBits, CommandInteraction } from "discord.js";
+import {
+  SlashCommandBuilder,
+  PermissionFlagsBits,
+  CommandInteraction,
+} from "discord.js";
 import { SlashCommand } from "../../../types";
 import createKey from "./handlers/key/createKey";
 import showDeleteKeyModal from "./handlers/key/showDeleteKeyModal";
@@ -9,15 +13,13 @@ const command: SlashCommand = {
   command: new SlashCommandBuilder()
     .setName("key")
     .setDescription("Manage keys")
-    .addSubcommand(sub =>
-      sub.setName("create").setDescription("Create a key")
+    .addSubcommand((sub) =>
+      sub.setName("create").setDescription("Create a key"),
     )
-    .addSubcommand(sub =>
-      sub.setName("delete").setDescription("Delete a key")
+    .addSubcommand((sub) =>
+      sub.setName("delete").setDescription("Delete a key"),
     )
-    .addSubcommand(sub =>
-      sub.setName("list").setDescription("List all keys")
-    )
+    .addSubcommand((sub) => sub.setName("list").setDescription("List all keys"))
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
   execute: async (interaction: CommandInteraction) => {
     const sub = interaction.options.getSubcommand();

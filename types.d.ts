@@ -57,10 +57,10 @@ export type VerificationResult = {
   userId?: string;
   userToken?: string;
   hwid?: string;
-}
+};
 
 export type DiscordUserInfo = {
   success: boolean;
   message?: string;
   data?: any;
-}
+};

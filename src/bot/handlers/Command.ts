@@ -20,16 +20,22 @@ module.exports = (client: Client) => {
 
   const rest: REST = new REST({ version: "10" }).setToken(process.env.TOKEN);
 
-//   rest.put(Routes.applicationCommands(process.env.CLIENT_ID), { body: [] })
-// 	.then(() => helpers.consola.success('Successfully deleted all application commands.'))
-// 	.catch(console.error);
+  //   rest.put(Routes.applicationCommands(process.env.CLIENT_ID), { body: [] })
+  // 	.then(() => helpers.consola.success('Successfully deleted all application commands.'))
+  // 	.catch(console.error);
 
   rest
-    .put(Routes.applicationGuildCommands(process.env.CLIENT_ID, process.env.GUILD_ID), {
-      body: commands.map((command) => command.toJSON()),
-    })
+    .put(
+      Routes.applicationGuildCommands(
+        process.env.CLIENT_ID,
+        process.env.GUILD_ID,
+      ),
+      {
+        body: commands.map((command) => command.toJSON()),
+      },
+    )
     .then((data: any) => {
-      helpers.consola.success(`Loaded ${data.length} command(s)`)
+      helpers.consola.success(`Loaded ${data.length} command(s)`);
     })
     .catch((e: any) => {
       helpers.consola.error(e);

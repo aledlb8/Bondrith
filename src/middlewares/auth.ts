@@ -35,12 +35,12 @@ class validation {
       req.user = {
         userId,
         userToken,
-      }
+      };
       next();
     } catch (error) {
-      helpers.consola.error(error)
+      helpers.consola.error(error);
     }
-  };
+  }
 
   static async validateAuth(req: Request, res: Response, next: NextFunction) {
     try {
@@ -71,9 +71,9 @@ class validation {
       // If the token is valid, proceed to the next middleware or route handler
       return next();
     } catch (error) {
-      helpers.consola.error(error)
+      helpers.consola.error(error);
     }
-  };
+  }
 }
 
 export default validation;

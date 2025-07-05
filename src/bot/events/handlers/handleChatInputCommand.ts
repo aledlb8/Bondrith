@@ -3,13 +3,14 @@ import { SlashCommand } from "../../../../types";
 import handleCommandError from "./handleCommandError";
 
 export default async function handleChatInputCommand(
-  interaction: ChatInputCommandInteraction
+  interaction: ChatInputCommandInteraction,
 ) {
-  const command: SlashCommand | undefined =
-    interaction.client.commands.get(interaction.commandName);
+  const command: SlashCommand | undefined = interaction.client.commands.get(
+    interaction.commandName,
+  );
   if (!command || !command.enable) {
     return interaction.reply(
-      "This command is not available at the moment, please try again later."
+      "This command is not available at the moment, please try again later.",
     );
   }
 
@@ -18,7 +19,7 @@ export default async function handleChatInputCommand(
   if (command.cooldown && cooldown && Date.now() < cooldown) {
     const remainingCooldown = Math.floor((cooldown - Date.now()) / 1000);
     await interaction.reply(
-      `You have to wait ${remainingCooldown} second(s) to use this command again.`
+      `You have to wait ${remainingCooldown} second(s) to use this command again.`,
     );
     setTimeout(() => interaction.deleteReply(), 5000);
     return;
@@ -27,7 +28,7 @@ export default async function handleChatInputCommand(
   if (command.cooldown) {
     interaction.client.cooldowns.set(
       userCooldownKey,
-      Date.now() + command.cooldown * 1000
+      Date.now() + command.cooldown * 1000,
     );
     setTimeout(() => {
       interaction.client.cooldowns.delete(userCooldownKey);
@@ -35,7 +36,7 @@ export default async function handleChatInputCommand(
   }
 
   try {
-    await command.execute(interaction);
+    command.execute(interaction);
   } catch (error: any) {
     await handleCommandError(interaction, error);
   }

@@ -1,6 +1,6 @@
 import { CommandInteraction, EmbedBuilder } from "discord.js";
-import keyModel from "../../../models/key";
-import helpers from "../../../helpers";
+import keyModel from "../../../../models/key";
+import helpers from "../../../../helpers";
 
 export default async function listKeys(interaction: CommandInteraction) {
   try {
@@ -19,10 +19,10 @@ export default async function listKeys(interaction: CommandInteraction) {
     const embedDetails = data
       .map((info) => {
         return [
-          `Key: \`${helpers.crypto.decrypt(info.key) ?? 'N/A'}\``,
-          `Used: \`${info.used ?? 'N/A'}\``,
+          `Key: \`${helpers.crypto.decrypt(info.key) ?? "N/A"}\``,
+          `Used: \`${info.used ?? "N/A"}\``,
           //@ts-ignore
-          `Created: ${info.createdAt ? `<t:${Math.floor(info.createdAt / 1000)}:R>` : 'N/A'}`,
+          `Created: ${info.createdAt ? `<t:${Math.floor(info.createdAt / 1000)}:R>` : "N/A"}`,
         ].join("\n");
       })
       .join("\n\n");

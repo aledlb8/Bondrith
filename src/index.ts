@@ -11,7 +11,8 @@ import helpers from "./helpers";
 // import routes
 import userRoute from "./routes/user";
 
-helpers.startup()
+helpers
+  .startup()
   .then(() => {
     // initialize
     const app = express();
@@ -20,10 +21,10 @@ helpers.startup()
     app.use("/api/user", userRoute);
 
     app.use((req, res, next) => {
-      res.header("Access-Control-Allow-Origin", "*")
-    })
+      res.header("Access-Control-Allow-Origin", "*");
+    });
 
-    app.use(cookieParser())
+    app.use(cookieParser());
     app.use(compression());
     app.use(helmet());
     app.use(cors({ origin: "*" }));
@@ -43,5 +44,5 @@ helpers.startup()
     });
   })
   .catch((err) => {
-    helpers.consola.error(err)
+    helpers.consola.error(err);
   });

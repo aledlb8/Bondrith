@@ -30,7 +30,7 @@ const command: SlashCommand = {
               .setColor("#FBC630")
               .setTimestamp()
               .setDescription(
-                `Uh oh! you don't have a ${process.env.NAME} account`
+                `Uh oh! you don't have a ${process.env.NAME} account`,
               ),
           ],
           components: [new ActionRowBuilder().addComponents(btn) as any],
@@ -63,7 +63,7 @@ const command: SlashCommand = {
         ephemeral: true,
       });
     } catch (err) {
-      console.log(err)
+      console.log(err);
       return interaction.reply({
         embeds: [
           new EmbedBuilder()

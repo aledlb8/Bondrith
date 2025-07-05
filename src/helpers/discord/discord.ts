@@ -12,9 +12,8 @@ class DiscordService {
    */
   static async getInfoByID(id: string): Promise<DiscordUserInfo> {
     try {
-      const response: AxiosResponse | undefined = await this.fetchDiscordUser(
-        id
-      );
+      const response: AxiosResponse | undefined =
+        await this.fetchDiscordUser(id);
 
       if (!response) {
         return { success: false, message: "Invalid discordId" };
@@ -42,7 +41,7 @@ class DiscordService {
       }
 
       const response: AxiosResponse | undefined = await this.fetchDiscordUser(
-        account.discordId
+        account.discordId,
       );
 
       if (!response) {
@@ -63,7 +62,7 @@ class DiscordService {
    * @returns A Promise resolving to the Axios response from the API call, or undefined on error.
    */
   private static async fetchDiscordUser(
-    id: string
+    id: string,
   ): Promise<AxiosResponse | undefined> {
     try {
       return await axios({

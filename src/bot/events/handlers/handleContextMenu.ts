@@ -3,18 +3,19 @@ import { SlashCommand } from "../../../../types";
 import handleCommandError from "./handleCommandError";
 
 export default async function handleContextMenu(
-  interaction: ContextMenuCommandInteraction
+  interaction: ContextMenuCommandInteraction,
 ) {
-  const context: SlashCommand | undefined =
-    interaction.client.commands.get(interaction.commandName);
+  const context: SlashCommand | undefined = interaction.client.commands.get(
+    interaction.commandName,
+  );
   if (!context || !context.enable) {
     return interaction.reply(
-      "This feature is not available at the moment, please try again later."
+      "This feature is not available at the moment, please try again later.",
     );
   }
 
   try {
-    await context.execute(interaction);
+    context.execute(interaction);
   } catch (error: any) {
     await handleCommandError(interaction, error);
   }

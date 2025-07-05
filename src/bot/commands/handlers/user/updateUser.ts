@@ -1,5 +1,12 @@
-import { CommandInteraction, EmbedBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder } from "discord.js";
-import userModel from "../../../models/user";
+import {
+  CommandInteraction,
+  EmbedBuilder,
+  ModalBuilder,
+  TextInputBuilder,
+  TextInputStyle,
+  ActionRowBuilder,
+} from "discord.js";
+import userModel from "../../../../models/user";
 
 export default async function updateUser(interaction: CommandInteraction) {
   const user = await userModel.findOne({ discordId: interaction.user.id });
@@ -9,7 +16,9 @@ export default async function updateUser(interaction: CommandInteraction) {
         new EmbedBuilder()
           .setColor("#FBC630")
           .setTimestamp()
-          .setDescription(`Uh oh! you already have a ${process.env.NAME} account linked`),
+          .setDescription(
+            `Uh oh! you already have a ${process.env.NAME} account linked`,
+          ),
       ],
       ephemeral: true,
     });

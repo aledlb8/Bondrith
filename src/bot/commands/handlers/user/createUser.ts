@@ -1,6 +1,11 @@
-import { CommandInteraction, EmbedBuilder, PermissionFlagsBits, User } from "discord.js";
-import helpers from "../../../helpers";
-import userModel from "../../../models/user";
+import {
+  CommandInteraction,
+  EmbedBuilder,
+  PermissionFlagsBits,
+  User,
+} from "discord.js";
+import helpers from "../../../../helpers";
+import userModel from "../../../../models/user";
 
 export default async function createUser(interaction: CommandInteraction) {
   const user: User = interaction.options.getUser("user");
@@ -16,7 +21,10 @@ export default async function createUser(interaction: CommandInteraction) {
     });
   }
   if (!interaction.memberPermissions?.has(PermissionFlagsBits.Administrator)) {
-    return interaction.reply({ content: "You don't have permission to use this subcommand.", ephemeral: true });
+    return interaction.reply({
+      content: "You don't have permission to use this subcommand.",
+      ephemeral: true,
+    });
   }
   try {
     const userCheck = await userModel.findOne({ discordId: user?.id });
@@ -26,7 +34,9 @@ export default async function createUser(interaction: CommandInteraction) {
           new EmbedBuilder()
             .setColor("#FBC630")
             .setTimestamp()
-            .setDescription(`That user already owns a ${process.env.NAME} copy`),
+            .setDescription(
+              `That user already owns a ${process.env.NAME} copy`,
+            ),
         ],
         ephemeral: true,
       });

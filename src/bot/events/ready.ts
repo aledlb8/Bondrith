@@ -7,9 +7,7 @@ const event: BotEvent = {
   name: "ready",
   once: true,
   execute: (client: Client) => {
-    helpers.consola.success(
-      `Logged in as ${client.user?.tag}`
-    );
+    helpers.consola.success(`Logged in as ${client.user?.tag}`);
   },
 };
 

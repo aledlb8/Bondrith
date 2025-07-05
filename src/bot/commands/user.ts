@@ -1,4 +1,8 @@
-import { SlashCommandBuilder, CommandInteraction, PermissionFlagsBits } from "discord.js";
+import {
+  SlashCommandBuilder,
+  CommandInteraction,
+  PermissionFlagsBits,
+} from "discord.js";
 import { SlashCommand } from "../../../types";
 import createUser from "./handlers/user/createUser";
 import deleteUser from "./handlers/user/deleteUser";
@@ -12,41 +16,55 @@ const command: SlashCommand = {
   command: new SlashCommandBuilder()
     .setName("user")
     .setDescription("Manage users")
-    .addSubcommand(sub =>
+    .addSubcommand((sub) =>
       sub
         .setName("create")
         .setDescription("Create a user")
-        .addUserOption(opt =>
-          opt.setName("user").setDescription("The user getting the account created").setRequired(true)
-        )
+        .addUserOption((opt) =>
+          opt
+            .setName("user")
+            .setDescription("The user getting the account created")
+            .setRequired(true),
+        ),
     )
-    .addSubcommand(sub =>
+    .addSubcommand((sub) =>
       sub
         .setName("delete")
         .setDescription("Delete a user")
-        .addUserOption(opt =>
-          opt.setName("user").setDescription("The user getting deleted").setRequired(true)
-        )
+        .addUserOption((opt) =>
+          opt
+            .setName("user")
+            .setDescription("The user getting deleted")
+            .setRequired(true),
+        ),
     )
-    .addSubcommand(sub =>
+    .addSubcommand((sub) =>
       sub
         .setName("info")
         .setDescription("Get the info of a user")
-        .addUserOption(opt =>
-          opt.setName("user").setDescription("The user where you getting the info from").setRequired(true)
-        )
+        .addUserOption((opt) =>
+          opt
+            .setName("user")
+            .setDescription("The user where you getting the info from")
+            .setRequired(true),
+        ),
     )
-    .addSubcommand(sub => sub.setName("list").setDescription("Get all the user infos"))
-    .addSubcommand(sub =>
-      sub.setName("update").setDescription("Update your account discord")
+    .addSubcommand((sub) =>
+      sub.setName("list").setDescription("Get all the user infos"),
     )
-    .addSubcommand(sub =>
+    .addSubcommand((sub) =>
+      sub.setName("update").setDescription("Update your account discord"),
+    )
+    .addSubcommand((sub) =>
       sub
         .setName("resethwid")
         .setDescription("Reset the HWID of a user")
-        .addUserOption(opt =>
-          opt.setName("user").setDescription("The user getting the HWID reset").setRequired(true)
-        )
+        .addUserOption((opt) =>
+          opt
+            .setName("user")
+            .setDescription("The user getting the HWID reset")
+            .setRequired(true),
+        ),
     ),
   execute: async (interaction: CommandInteraction) => {
     const sub = interaction.options.getSubcommand();

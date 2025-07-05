@@ -1,9 +1,17 @@
-import { CommandInteraction, EmbedBuilder, PermissionFlagsBits, User } from "discord.js";
-import userModel from "../../../models/user";
+import {
+  CommandInteraction,
+  EmbedBuilder,
+  PermissionFlagsBits,
+  User,
+} from "discord.js";
+import userModel from "../../../../models/user";
 
 export default async function deleteUser(interaction: CommandInteraction) {
   if (!interaction.memberPermissions?.has(PermissionFlagsBits.Administrator)) {
-    return interaction.reply({ content: "You don't have permission to use this subcommand.", ephemeral: true });
+    return interaction.reply({
+      content: "You don't have permission to use this subcommand.",
+      ephemeral: true,
+    });
   }
   const user: User | null = interaction.options.getUser("user");
   try {

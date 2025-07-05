@@ -3,7 +3,7 @@ import keyModel from "../../../../models/key";
 import helpers from "../../../../helpers";
 
 export default async function handleKeyDeletion(
-  interaction: ModalSubmitInteraction
+  interaction: ModalSubmitInteraction,
 ) {
   const key = interaction.fields.getTextInputValue("keyInput");
 

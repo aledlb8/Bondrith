@@ -4,7 +4,7 @@ import keyModel from "../../../../models/key";
 import helpers from "../../../../helpers";
 
 export default async function handleKeyRedemption(
-  interaction: ModalSubmitInteraction
+  interaction: ModalSubmitInteraction,
 ) {
   const user = interaction.user;
   const key = interaction.fields.getTextInputValue("keyInput");
@@ -45,7 +45,7 @@ export default async function handleKeyRedemption(
               .setColor("#FBC630")
               .setTimestamp()
               .setDescription(
-                "That key doesn't exist or has already been redeemed"
+                "That key doesn't exist or has already been redeemed",
               ),
           ],
           ephemeral: true,
@@ -60,7 +60,9 @@ export default async function handleKeyRedemption(
             new EmbedBuilder()
               .setColor("#FBC630")
               .setTimestamp()
-              .setDescription("Internal server error while generating user info"),
+              .setDescription(
+                "Internal server error while generating user info",
+              ),
           ],
           ephemeral: true,
         });
@@ -75,13 +77,18 @@ export default async function handleKeyRedemption(
             new EmbedBuilder()
               .setColor("#FBC630")
               .setTimestamp()
-              .setDescription("Internal server error while encrypting user info"),
+              .setDescription(
+                "Internal server error while encrypting user info",
+              ),
           ],
           ephemeral: true,
         });
       }
 
-      const secret: string | undefined = helpers.jwt.generate(userId, userToken);
+      const secret: string | undefined = helpers.jwt.generate(
+        userId,
+        userToken,
+      );
 
       let nextId: number;
 
@@ -106,7 +113,9 @@ export default async function handleKeyRedemption(
                   new EmbedBuilder()
                     .setColor("#FBC630")
                     .setTimestamp()
-                    .setDescription(`Id: \`${userInfo.id}\`\nToken: \`${userInfo.token}\``),
+                    .setDescription(
+                      `Id: \`${userInfo.id}\`\nToken: \`${userInfo.token}\``,
+                    ),
                 ],
               });
 
@@ -126,7 +135,9 @@ export default async function handleKeyRedemption(
                   new EmbedBuilder()
                     .setColor("#FBC630")
                     .setTimestamp()
-                    .setDescription("Internal server error while creating user"),
+                    .setDescription(
+                      "Internal server error while creating user",
+                    ),
                 ],
                 ephemeral: true,
               });
@@ -139,7 +150,9 @@ export default async function handleKeyRedemption(
                 new EmbedBuilder()
                   .setColor("#FBC630")
                   .setTimestamp()
-                  .setDescription("Internal server error while counting documents"),
+                  .setDescription(
+                    "Internal server error while counting documents",
+                  ),
               ],
               ephemeral: true,
             });

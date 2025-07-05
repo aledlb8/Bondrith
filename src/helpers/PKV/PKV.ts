@@ -23,7 +23,7 @@ class PKV {
       seed: string,
       a: number,
       b: number,
-      c: number
+      c: number,
     ): string {
       const seedInt: number = parseInt(seed, 16);
       const aMod: number = a % 25;

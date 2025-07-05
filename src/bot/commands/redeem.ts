@@ -30,7 +30,7 @@ const command: SlashCommand = {
         .setRequired(true);
 
       const actionRow = new ActionRowBuilder().addComponents(keyInput);
-      
+
       modal.addComponents(actionRow as any);
       return await interaction.showModal(modal);
     } catch (err) {

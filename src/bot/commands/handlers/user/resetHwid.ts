@@ -1,9 +1,17 @@
-import { CommandInteraction, EmbedBuilder, PermissionFlagsBits, User } from "discord.js";
-import userModel from "../../../models/user";
+import {
+  CommandInteraction,
+  EmbedBuilder,
+  PermissionFlagsBits,
+  User,
+} from "discord.js";
+import userModel from "../../../../models/user";
 
 export default async function resetHwid(interaction: CommandInteraction) {
   if (!interaction.memberPermissions?.has(PermissionFlagsBits.Administrator)) {
-    return interaction.reply({ content: "You don't have permission to use this subcommand.", ephemeral: true });
+    return interaction.reply({
+      content: "You don't have permission to use this subcommand.",
+      ephemeral: true,
+    });
   }
   const user: User | null = interaction.options.getUser("user");
   try {
@@ -19,7 +27,10 @@ export default async function resetHwid(interaction: CommandInteraction) {
         ephemeral: true,
       });
     }
-    if (!userCheck.hwid || userCheck.hwid == process.env.HWID_RESET_PLACEHOLDER) {
+    if (
+      !userCheck.hwid ||
+      userCheck.hwid == process.env.HWID_RESET_PLACEHOLDER
+    ) {
       return interaction.reply({
         embeds: [
           new EmbedBuilder()

@@ -1,5 +1,11 @@
-import { createCipheriv, createDecipheriv, createHash, createHmac, randomBytes } from 'crypto';
-import helpers from '..';
+import {
+  createCipheriv,
+  createDecipheriv,
+  createHash,
+  createHmac,
+  randomBytes,
+} from "crypto";
+import helpers from "..";
 import { Cipher, Decipher } from "node:crypto";
 
 const algorithm = "aes-256-ctr";
@@ -19,7 +25,7 @@ class CryptoUtils {
     const envEncryptKey: string = process.env.ENCRYPT_KEY;
     if (!envEncryptKey) {
       throw new Error(
-        "Invalid or missing ENCRYPT_KEY in environment variables."
+        "Invalid or missing ENCRYPT_KEY in environment variables.",
       );
     }
 
@@ -55,7 +61,7 @@ class CryptoUtils {
       algorithm,
       key,
       // @ts-ignore
-      Buffer.from(string.iv, "hex")
+      Buffer.from(string.iv, "hex"),
     );
 
     const concat: Buffer = Buffer.concat([
@@ -70,7 +76,9 @@ class CryptoUtils {
   static genUserInfo() {
     const id: string = randomBytes(8).toString("hex");
     const encryptKey: string = this.getKeyFromEnv();
-    const token: string = createHmac("sha256", encryptKey).update(id).digest("hex");
+    const token: string = createHmac("sha256", encryptKey)
+      .update(id)
+      .digest("hex");
     return { id, token };
   }
 

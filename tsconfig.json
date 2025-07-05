@@ -29,12 +29,12 @@
   },
 
   /* Library-Specific Options (if applicable) */
-  "declaration": true,       // If building for a library
-  "composite": true,         // If building for a library in a monorepo
-  "declarationMap": true,    // If building for a library in a monorepo
-  "sourceMap": true,         // If building for a library in a monorepo
+  "declaration": true, // If building for a library
+  "composite": true, // If building for a library in a monorepo
+  "declarationMap": true, // If building for a library in a monorepo
+  "sourceMap": true, // If building for a library in a monorepo
 
   /* DOM-Specific Options (choose one based on your project) */
-  "lib": ["es2022", "dom", "dom.iterable"],  // If your code runs in the DOM
+  "lib": ["es2022", "dom", "dom.iterable"] // If your code runs in the DOM
   // "lib": ["es2022"]  // If your code doesn't run in the DOM
 }

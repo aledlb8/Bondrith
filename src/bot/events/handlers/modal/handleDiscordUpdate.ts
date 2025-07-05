@@ -4,7 +4,7 @@ import userModel from "../../../../models/user";
 import helpers from "../../../../helpers";
 
 export default async function handleDiscordUpdate(
-  interaction: ModalSubmitInteraction
+  interaction: ModalSubmitInteraction,
 ) {
   const id = interaction.fields.getTextInputValue("accountId");
 
@@ -30,7 +30,7 @@ export default async function handleDiscordUpdate(
             .setColor("#FBC630")
             .setTimestamp()
             .setDescription(
-              `This discord account is already linked to your ${process.env.NAME} account`
+              `This discord account is already linked to your ${process.env.NAME} account`,
             ),
         ],
         ephemeral: true,
@@ -71,7 +71,9 @@ export default async function handleDiscordUpdate(
         new EmbedBuilder()
           .setColor("#FBC630")
           .setTimestamp()
-          .setDescription("Internal server error while updating discord account"),
+          .setDescription(
+            "Internal server error while updating discord account",
+          ),
       ],
       ephemeral: true,
     });

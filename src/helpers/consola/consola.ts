@@ -36,20 +36,20 @@ function getFileName(depth: number = 3): string {
 
   if (!stack) return "Unknown";
 
-  const stackLines = stack.split("\n").map(line => line.trim());
+  const stackLines = stack.split("\n").map((line) => line.trim());
 
   // Adjust depth to capture the right stack frame
   if (stackLines.length <= depth) return "Unknown";
 
   // Extract file name and line number
   const callerLine = stackLines[depth] || "";
-  const match = callerLine.match(/\((.*):\d+:\d+\)/) || callerLine.match(/at (.*):\d+:\d+/);
+  const match =
+    callerLine.match(/\((.*):\d+:\d+\)/) || callerLine.match(/at (.*):\d+:\d+/);
 
   if (!match || !match[1]) return "Unknown";
 
   return `${TextColor.White}[${TextColor.Magenta}${match[1]}${TextColor.White}]${TextColor.Reset}`;
 }
-
 
 /**
  * Interface for logger functions.
@@ -69,8 +69,9 @@ interface Logger {
  */
 const createLogger = (level: string, color: TextColor): Logger => {
   return (message?: any): void => {
-    const text = `${getCurrentTime()} ${getFileName()} ${TextColor.White}[${color}${level}${TextColor.White
-      }] ${TextColor.Reset}${message !== undefined ? message : " "}`;
+    const text = `${getCurrentTime()} ${getFileName()} ${TextColor.White}[${color}${level}${
+      TextColor.White
+    }] ${TextColor.Reset}${message !== undefined ? message : " "}`;
     console.log(text);
   };
 };

@@ -1,10 +1,18 @@
-import { CommandInteraction, EmbedBuilder, PermissionFlagsBits, User } from "discord.js";
-import userModel from "../../../models/user";
-import helpers from "../../../helpers";
+import {
+  CommandInteraction,
+  EmbedBuilder,
+  PermissionFlagsBits,
+  User,
+} from "discord.js";
+import userModel from "../../../../models/user";
+import helpers from "../../../../helpers";
 
 export default async function infoUser(interaction: CommandInteraction) {
   if (!interaction.memberPermissions?.has(PermissionFlagsBits.Administrator)) {
-    return interaction.reply({ content: "You don't have permission to use this subcommand.", ephemeral: true });
+    return interaction.reply({
+      content: "You don't have permission to use this subcommand.",
+      ephemeral: true,
+    });
   }
   const user: User | null = interaction.options.getUser("user");
   try {
@@ -35,15 +43,15 @@ export default async function infoUser(interaction: CommandInteraction) {
     }
     const description = [
       `● **Account Information**`,
-      `ID: \`${data.id?.toString() ?? 'N/A'}\``,
-      `UserID: \`${userId ?? 'N/A'}\``,
-      `UserToken: \`${userToken ?? 'N/A'}\``,
+      `ID: \`${data.id?.toString() ?? "N/A"}\``,
+      `UserID: \`${userId ?? "N/A"}\``,
+      `UserToken: \`${userToken ?? "N/A"}\``,
       //@ts-ignore
-      `Created: ${data.createdAt ? `<t:${Math.floor(data.createdAt / 1000)}:R>` : 'N/A'}`,
+      `Created: ${data.createdAt ? `<t:${Math.floor(data.createdAt / 1000)}:R>` : "N/A"}`,
       `● **User Information**`,
-      `User: <@${data.discordId ?? '1108168493548961793'}>`,
-      `IP: \`${data.ip ?? 'N/A'}\``,
-      `HWID: \`${data.hwid ?? 'N/A'}\``,
+      `User: <@${data.discordId ?? "1108168493548961793"}>`,
+      `IP: \`${data.ip ?? "N/A"}\``,
+      `HWID: \`${data.hwid ?? "N/A"}\``,
     ];
     return interaction.reply({
       embeds: [

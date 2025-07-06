@@ -1,6 +1,6 @@
 import {
   SlashCommandBuilder,
-  CommandInteraction,
+  ChatInputCommandInteraction,
   PermissionFlagsBits,
 } from "discord.js";
 import { SlashCommand } from "../../../types";
@@ -16,6 +16,7 @@ const command: SlashCommand = {
   command: new SlashCommandBuilder()
     .setName("user")
     .setDescription("Manage users")
+    .setDefaultMemberPermissions(PermissionFlagsBits.AddReactions)
     .addSubcommand((sub) =>
       sub
         .setName("create")
@@ -66,7 +67,7 @@ const command: SlashCommand = {
             .setRequired(true),
         ),
     ),
-  execute: async (interaction: CommandInteraction) => {
+  execute: async (interaction: ChatInputCommandInteraction) => {
     const sub = interaction.options.getSubcommand();
     switch (sub) {
       case "create":

@@ -1,5 +1,5 @@
 import {
-  CommandInteraction,
+  ChatInputCommandInteraction,
   EmbedBuilder,
   PermissionFlagsBits,
   User,
@@ -7,7 +7,9 @@ import {
 import userModel from "../../../../models/user";
 import helpers from "../../../../helpers";
 
-export default async function infoUser(interaction: CommandInteraction) {
+export default async function infoUser(
+  interaction: ChatInputCommandInteraction,
+) {
   if (!interaction.memberPermissions?.has(PermissionFlagsBits.Administrator)) {
     return interaction.reply({
       content: "You don't have permission to use this subcommand.",

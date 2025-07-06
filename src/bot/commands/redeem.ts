@@ -1,11 +1,11 @@
 import {
   SlashCommandBuilder,
   EmbedBuilder,
-  CommandInteraction,
   ModalBuilder,
   TextInputBuilder,
   TextInputStyle,
   ActionRowBuilder,
+  ChatInputCommandInteraction,
 } from "discord.js";
 import { SlashCommand } from "../../../types";
 
@@ -14,7 +14,7 @@ const command: SlashCommand = {
   command: new SlashCommandBuilder()
     .setName("redeem")
     .setDescription("Redeem a key"),
-  execute: async (interaction: CommandInteraction) => {
+  execute: async (interaction: ChatInputCommandInteraction) => {
     try {
       const modal: ModalBuilder = new ModalBuilder()
         .setCustomId("redeem")

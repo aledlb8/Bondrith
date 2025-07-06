@@ -16,7 +16,9 @@ export default async function handleContextMenu(
 
   try {
     context.execute(interaction);
+    return;
   } catch (error: any) {
     await handleCommandError(interaction, error);
+    return;
   }
 }

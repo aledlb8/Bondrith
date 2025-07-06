@@ -1,16 +1,9 @@
-import {
-  SlashCommandBuilder,
-  CommandInteraction,
-  Collection,
-  PermissionResolvable,
-  Message,
-  AutocompleteInteraction,
-} from "discord.js";
-
 export interface SlashCommand {
   enable: boolean;
   command: SlashCommandBuilder | any;
-  execute: (interaction: CommandInteraction) => void;
+  execute: (
+    interaction: CommandInteraction | ChatInputCommandInteraction,
+  ) => void;
   autocomplete?: (interaction: AutocompleteInteraction) => void;
   cooldown?: number;
 }

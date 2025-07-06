@@ -1,12 +1,14 @@
 import {
-  CommandInteraction,
+  ChatInputCommandInteraction,
   EmbedBuilder,
   PermissionFlagsBits,
   User,
 } from "discord.js";
 import userModel from "../../../../models/user";
 
-export default async function resetHwid(interaction: CommandInteraction) {
+export default async function resetHwid(
+  interaction: ChatInputCommandInteraction,
+) {
   if (!interaction.memberPermissions?.has(PermissionFlagsBits.Administrator)) {
     return interaction.reply({
       content: "You don't have permission to use this subcommand.",

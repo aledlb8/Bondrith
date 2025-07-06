@@ -1,8 +1,10 @@
-import { CommandInteraction, EmbedBuilder } from "discord.js";
+import { ChatInputCommandInteraction, EmbedBuilder } from "discord.js";
 import keyModel from "../../../../models/key";
 import helpers from "../../../../helpers";
 
-export default async function listKeys(interaction: CommandInteraction) {
+export default async function listKeys(
+  interaction: ChatInputCommandInteraction,
+) {
   try {
     const data = await keyModel.find();
     if (!data.length) {

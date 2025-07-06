@@ -9,9 +9,10 @@ export default async function handleChatInputCommand(
     interaction.commandName,
   );
   if (!command || !command.enable) {
-    return interaction.reply(
+    await interaction.reply(
       "This command is not available at the moment, please try again later.",
     );
+    return;
   }
 
   const userCooldownKey = `${interaction.commandName}-${interaction.user.username}`;
@@ -37,7 +38,9 @@ export default async function handleChatInputCommand(
 
   try {
     command.execute(interaction);
+    return;
   } catch (error: any) {
     await handleCommandError(interaction, error);
+    return;
   }
 }

@@ -4,6 +4,7 @@ import {
   ButtonBuilder,
   ButtonStyle,
   ActionRowBuilder,
+  ChatInputCommandInteraction,
 } from "discord.js";
 import { SlashCommand } from "../../../types";
 import helpers from "../../helpers";
@@ -14,7 +15,7 @@ const command: SlashCommand = {
   command: new SlashCommandBuilder()
     .setName("get")
     .setDescription("Get your ID and TOKEN"),
-  execute: async (interaction) => {
+  execute: async (interaction: ChatInputCommandInteraction) => {
     try {
       const user = await userModel.findOne({ discordId: interaction.user.id });
 

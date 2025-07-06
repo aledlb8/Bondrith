@@ -1,5 +1,5 @@
 import {
-  CommandInteraction,
+  ChatInputCommandInteraction,
   EmbedBuilder,
   ModalBuilder,
   TextInputBuilder,
@@ -8,7 +8,9 @@ import {
 } from "discord.js";
 import userModel from "../../../../models/user";
 
-export default async function updateUser(interaction: CommandInteraction) {
+export default async function updateUser(
+  interaction: ChatInputCommandInteraction,
+) {
   const user = await userModel.findOne({ discordId: interaction.user.id });
   if (user) {
     return interaction.reply({

@@ -65,6 +65,7 @@ export default async function handleDiscordUpdate(
       ],
       ephemeral: true,
     });
+    return;
   } catch (err) {
     await interaction.reply({
       embeds: [
@@ -77,5 +78,6 @@ export default async function handleDiscordUpdate(
       ],
       ephemeral: true,
     });
+    return;
   }
 }

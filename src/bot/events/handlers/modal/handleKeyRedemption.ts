@@ -170,9 +170,10 @@ export default async function handleKeyRedemption(
         });
       }
     }
+    return;
   } catch (err) {
     helpers.consola.error(err);
-    await interaction.reply({
+    return await interaction.reply({
       embeds: [
         new EmbedBuilder()
           .setColor("#FBC630")

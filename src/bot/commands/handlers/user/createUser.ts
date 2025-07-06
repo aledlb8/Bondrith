@@ -1,5 +1,5 @@
 import {
-  CommandInteraction,
+  ChatInputCommandInteraction,
   EmbedBuilder,
   PermissionFlagsBits,
   User,
@@ -7,8 +7,10 @@ import {
 import helpers from "../../../../helpers";
 import userModel from "../../../../models/user";
 
-export default async function createUser(interaction: CommandInteraction) {
-  const user: User = interaction.options.getUser("user");
+export default async function createUser(
+  interaction: ChatInputCommandInteraction,
+) {
+  const user: User | null = interaction.options.getUser("user");
   if (user?.bot) {
     return interaction.reply({
       embeds: [

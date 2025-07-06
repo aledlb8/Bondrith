@@ -1,7 +1,7 @@
 import {
   SlashCommandBuilder,
   PermissionFlagsBits,
-  CommandInteraction,
+  ChatInputCommandInteraction,
 } from "discord.js";
 import { SlashCommand } from "../../../types";
 import createKey from "./handlers/key/createKey";
@@ -13,6 +13,7 @@ const command: SlashCommand = {
   command: new SlashCommandBuilder()
     .setName("key")
     .setDescription("Manage keys")
+    .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
     .addSubcommand((sub) =>
       sub.setName("create").setDescription("Create a key"),
     )
@@ -21,7 +22,7 @@ const command: SlashCommand = {
     )
     .addSubcommand((sub) => sub.setName("list").setDescription("List all keys"))
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
-  execute: async (interaction: CommandInteraction) => {
+  execute: async (interaction: ChatInputCommandInteraction) => {
     const sub = interaction.options.getSubcommand();
     switch (sub) {
       case "create":

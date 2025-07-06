@@ -13,10 +13,23 @@ export default async function handleKeyRedemption(
     const userCheck = await userModel.findOne({ discordId: user.id });
     const keys = await keyModel.find();
 
+    if (!keys.length) {
+      await interaction.reply({
+        embeds: [
+          new EmbedBuilder()
+            .setColor("#FBC630")
+            .setTimestamp()
+            .setDescription("No keys found"),
+        ],
+        ephemeral: true,
+      });
+      return;
+    }
+
     for (const data of keys) {
       const decryptedKey: string = helpers.crypto.decrypt(data.key);
       if (decryptedKey !== key) {
-        return await interaction.reply({
+        await interaction.reply({
           embeds: [
             new EmbedBuilder()
               .setColor("#FBC630")
@@ -25,9 +38,11 @@ export default async function handleKeyRedemption(
           ],
           ephemeral: true,
         });
+        return;
       }
+
       if (userCheck) {
-        return await interaction.reply({
+        await interaction.reply({
           embeds: [
             new EmbedBuilder()
               .setColor("#FBC630")
@@ -36,10 +51,11 @@ export default async function handleKeyRedemption(
           ],
           ephemeral: true,
         });
+        return;
       }
 
       if (!data || data.used) {
-        return await interaction.reply({
+        await interaction.reply({
           embeds: [
             new EmbedBuilder()
               .setColor("#FBC630")
@@ -50,12 +66,13 @@ export default async function handleKeyRedemption(
           ],
           ephemeral: true,
         });
+        return;
       }
 
       const userInfo = helpers.crypto.genUserInfo();
 
       if (!userInfo) {
-        return await interaction.reply({
+        await interaction.reply({
           embeds: [
             new EmbedBuilder()
               .setColor("#FBC630")
@@ -66,13 +83,14 @@ export default async function handleKeyRedemption(
           ],
           ephemeral: true,
         });
+        return;
       }
 
       const userId: string = helpers.crypto.encrypt(userInfo.id);
       const userToken: string = helpers.crypto.encrypt(userInfo.token);
 
       if (!userId || !userToken) {
-        return await interaction.reply({
+        await interaction.reply({
           embeds: [
             new EmbedBuilder()
               .setColor("#FBC630")
@@ -83,6 +101,7 @@ export default async function handleKeyRedemption(
           ],
           ephemeral: true,
         });
+        return;
       }
 
       const secret: string | undefined = helpers.jwt.generate(
@@ -119,15 +138,18 @@ export default async function handleKeyRedemption(
                 ],
               });
 
-              return await interaction.reply({
+              await interaction.reply({
                 embeds: [
                   new EmbedBuilder()
                     .setColor("#FBC630")
                     .setTimestamp()
-                    .setDescription("Key redeemed, check DMs"),
+                    .setDescription(
+                      "Key redeemed, a message has been sent to your DMs",
+                    ),
                 ],
                 ephemeral: true,
               });
+              return;
             } catch (err) {
               helpers.consola.error(err);
               return await interaction.reply({
@@ -145,7 +167,7 @@ export default async function handleKeyRedemption(
           })
           .catch(async (err: Error) => {
             helpers.consola.error(err);
-            return await interaction.reply({
+            await interaction.reply({
               embeds: [
                 new EmbedBuilder()
                   .setColor("#FBC630")
@@ -156,10 +178,11 @@ export default async function handleKeyRedemption(
               ],
               ephemeral: true,
             });
+            return;
           });
       } catch (err) {
         helpers.consola.error(err);
-        return await interaction.reply({
+        await interaction.reply({
           embeds: [
             new EmbedBuilder()
               .setColor("#FBC630")
@@ -168,8 +191,10 @@ export default async function handleKeyRedemption(
           ],
           ephemeral: true,
         });
+        return;
       }
     }
+
     return;
   } catch (err) {
     helpers.consola.error(err);

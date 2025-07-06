@@ -40,6 +40,7 @@ Modern high-security auth system. Completely free and community driven.
 </div>
 
 <h1 align="center">Bondrith</h1>
+
 ## PLEASE READ: Bondrith is not meant for production use, it's a proof of concept project that aims to showcase the potential of a modern high-security auth system.
 
 ## While it's not recommended for real-world applications, it's a valuable tool for developers and security enthusiasts to explore and learn from.

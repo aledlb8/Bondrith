@@ -93,7 +93,7 @@ This auth has rate limiting to prevent abuse. The rate limits are as follows:
 
 - Mayor improvements and bug fixes
 
-### [0.3] - 2024-12-27
+### [0.3] - 2025-07-05
 
 - Improved project structure and code organization
 - Other improvements and bug fixes

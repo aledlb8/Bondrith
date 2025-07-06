@@ -1,8 +1,4 @@
-import {
-  SlashCommandBuilder,
-  ChatInputCommandInteraction,
-  PermissionFlagsBits,
-} from "discord.js";
+import { SlashCommandBuilder, ChatInputCommandInteraction } from "discord.js";
 import { SlashCommand } from "../../../types";
 import createUser from "./handlers/user/createUser";
 import deleteUser from "./handlers/user/deleteUser";
@@ -16,7 +12,6 @@ const command: SlashCommand = {
   command: new SlashCommandBuilder()
     .setName("user")
     .setDescription("Manage users")
-    .setDefaultMemberPermissions(PermissionFlagsBits.AddReactions)
     .addSubcommand((sub) =>
       sub
         .setName("create")

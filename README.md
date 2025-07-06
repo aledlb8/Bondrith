@@ -41,7 +41,11 @@ Modern high-security auth system. Completely free and community driven.
 
 <h1 align="center">Bondrith</h1>
 <p align="center">
-  Experience our sophisticated product offerings through a streamlined API, allowing access via distinct endpoints using both userId for dashboard entry and userToken for product interaction. Elevate security with our cutting-edge HWID lock, prevent unauthorized sharing, and seamlessly manage all aspects via Discord integration. Rest assured with end-to-end encryption, safeguarding sensitive data. Unveil a plethora of advanced features for an enriched experience.
+    PLEASE READ: Bondrith is not meant for production use, it's a proof of concept project that aims to showcase the potential of a modern high-security auth system.
+
+    While it's not recommended for real-world applications, it's a valuable tool for developers and security enthusiasts to explore and learn from.
+
+    It's important to note that Bondrith is still in its early stages and may contain bugs or security vulnerabilities. Use it at your own risk.
 </p>
 
 ## Key Features
@@ -84,4 +88,4 @@ Modern high-security auth system. Completely free and community driven.
 [Contribute]: https://github.com/aledlb8/Bondrith/blob/master/CONTRIBUTING.md
 [License]: https://github.com/aledlb8/Bondrith/blob/master/LICENSE
 
-Made with ❤️ by [aledlb](https://github.com/aledlb8)
+Made with ❤️ by [aledlb](https://aledlb.vercel.app)
